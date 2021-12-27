@@ -15,7 +15,7 @@ namespace UniqueFileGenerator
             {
                 WriteLine($"Create unique files with unique contents.");
                 WriteLine($"Arguments:");
-                WriteLine($"  - The number of files to make.");
+                WriteLine($"  - The number of files to make");
                 WriteLine($"  - (Optional) File name prefix");
                 WriteLine($"  - (Optional) The desired file extension (excluding the opening period)");
                 return;
@@ -23,7 +23,7 @@ namespace UniqueFileGenerator
 
             if (!int.TryParse(args[0], out var count) || count < 1)
             {
-                WriteLine($"Invalid count {count} specified.");
+                WriteLine($"Invalid count specified ({count}).");
                 return;
             }
 
@@ -41,6 +41,8 @@ namespace UniqueFileGenerator
             //     : "." + Path.DirectorySeparatorChar;
             var directory = "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
 
+            Directory.CreateDirectory(directory);
+
             var random = new Random();
 
             // TODO: Support checking for used ints.
@@ -57,9 +59,9 @@ namespace UniqueFileGenerator
 
                 var path = directory + fileName + extension;
 
-                using var fs = File.Create(path);
+                using var fileStream = File.Create(path);
                 var content = new UTF8Encoding(true).GetBytes(fileName);
-                fs.Write(content, 0, content.Length);
+                fileStream.Write(content, 0, content.Length);
             }
 
             WriteLine($"{count} files created.");
