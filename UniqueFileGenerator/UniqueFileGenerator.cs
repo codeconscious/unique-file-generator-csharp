@@ -13,11 +13,11 @@ namespace UniqueFileGenerator
         {
             if (args.Length == 0)
             {
-                WriteLine($"Create unique files with unique contents.");
+                WriteLine($"Create unique files with unique contents using random numbers. Saves to ./output directory.");
                 WriteLine($"Arguments:");
                 WriteLine($"  - The number of files to make");
                 WriteLine($"  - (Optional) File name prefix");
-                WriteLine($"  - (Optional) The desired file extension (excluding the opening period)");
+                WriteLine($"  - (Optional, but must be used with the second argument) The desired file extension (excluding the opening period)");
                 return;
             }
 
