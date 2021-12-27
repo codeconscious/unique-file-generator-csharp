@@ -11,6 +11,16 @@ namespace UniqueFileGenerator
     {
         public static void Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                WriteLine($"Create unique files with unique contents.");
+                WriteLine($"Arguments:");
+                WriteLine($"  - The number of files to make.");
+                WriteLine($"  - (Optional) File name prefix");
+                WriteLine($"  - (Optional) The desired file extension (excluding the opening period)");
+                return;
+            }
+
             if (!int.TryParse(args[0], out var count) || count < 1)
             {
                 WriteLine($"Invalid count {count} specified.");
