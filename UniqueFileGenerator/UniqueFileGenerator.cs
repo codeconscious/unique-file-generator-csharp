@@ -4,40 +4,13 @@ using Spectre.Console;
 
 namespace UniqueFileGenerator;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
         if (args.Length == 0)
         {
-            var outerTable = new Table();
-            outerTable.AddColumn("Unique File Generator");
-            outerTable.AddRow("Create unique files with unique contents using random numbers.");
-            outerTable.AddEmptyRow();
-
-            const string usage = "Usage: Pass in the number of files, and then optionally add any additional arguments.\n\n" +
-                "Examples:\n" +
-                "   uniquefilegen 10  (Creates 10 files with the default settings)\n" +
-                "   uniquefilegen 1000 -p TEST- e txt  (Creates 1,000 files in the format \"TEST-12345.txt\")";
-            outerTable.AddRow(usage);
-            outerTable.AddEmptyRow();
-            // outerTable.AddRow("Usage: uniquefilegen [count] [arguments]");
-            // outerTable.AddRow("Example: uniquefilegen 10 [arguments]");
-
-            var argTable = new Table();
-            argTable.Border(TableBorder.None);
-            argTable.AddColumn("Arg");
-            argTable.AddColumn("Description");
-            argTable.HideHeaders();
-            argTable.Columns[0].PadRight(3);
-            argTable.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with - or _.");
-            argTable.AddRow("-e", "The desired file extension. (The opening period is unnecessary.)");
-            argTable.AddRow("-o", "Specify an output subfolder. Defaults to \"output\"");
-            //table.AddRow("-s", "The size of each file [Not support yet]");
-
-            outerTable.AddRow(argTable);
-
-            AnsiConsole.Write(outerTable);
+            PrintInstructions();
             return;
         }
 
@@ -46,7 +19,7 @@ public class Program
         {
             settings = new Settings(args);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
                 AnsiConsole.WriteException(ex, ExceptionFormats.ShortenTypes);
                 return;
@@ -55,7 +28,7 @@ public class Program
         Directory.CreateDirectory(settings.OutputDirectory);
 
         var random = new Random();
-        var noSpaceChars = new char[] { '_', '-' }; // Or any non-alphanumeric char?
+        var noSpaceChars = new char[] { '_', '-', '.' }; // Or any non-alphanumeric char?
 
         // TODO: Support checking for used ints.
         //var usedValues = new List<int>();
@@ -95,16 +68,48 @@ public class Program
         if (count == 0)
             return string.Empty;
 
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var stringChars = new char[count];
+        const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var outputChars = new char[count];
 
         var random = new Random();
 
-        for (int i = 0; i < stringChars.Length; i++)
+        for (int i = 0; i < outputChars.Length; i++)
         {
-            stringChars[i] = chars[random.Next(chars.Length)];
+            outputChars[i] = allowedChars[random.Next(allowedChars.Length)];
         }
 
-        return new string(stringChars);
+        return new string(outputChars);
+    }
+
+    private static void PrintInstructions()
+    {
+        var outerTable = new Table();
+        outerTable.AddColumn("Unique File Generator");
+        outerTable.AddRow("Create unique files with unique contents using random numbers.");
+        outerTable.AddEmptyRow();
+
+        const string usage = "Usage: Pass in the number of files, and then optionally add any additional arguments.\n\n" +
+            "Examples:\n" +
+            "   uniquefilegen 10  (Creates 10 files with the default settings)\n" +
+            "   uniquefilegen 1000 -p TEST- e txt  (Creates 1,000 files in the format \"TEST-12345.txt\")";
+        outerTable.AddRow(usage);
+        outerTable.AddEmptyRow();
+        // outerTable.AddRow("Usage: uniquefilegen [count] [arguments]");
+        // outerTable.AddRow("Example: uniquefilegen 10 [arguments]");
+
+        var argTable = new Table();
+        argTable.Border(TableBorder.None);
+        argTable.AddColumn("Arg");
+        argTable.AddColumn("Description");
+        argTable.HideHeaders();
+        argTable.Columns[0].PadRight(3);
+        argTable.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with \".\" or \"-\" or \"_\".");
+        argTable.AddRow("-e", "The desired file extension. (The opening period is unnecessary.)");
+        argTable.AddRow("-o", "Specify an output subfolder. Defaults to \"output\"");
+        //table.AddRow("-s", "The size of each file [Not support yet]");
+
+        outerTable.AddRow(argTable);
+
+        AnsiConsole.Write(outerTable);
     }
 }
