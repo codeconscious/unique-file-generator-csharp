@@ -20,8 +20,10 @@ namespace UniqueFileGenerator
                 var table = new Table();
                 table.AddColumn("Arg");
                 table.AddColumn("Description");
-                table.AddRow("-p", "File name prefix");
-                table.AddRow("-e", "The desired file extension. (The opening period is optional.)");
+                table.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with - or _.");
+                table.AddRow("-e", "The desired file extension. (The opening period is unnecessary.)");
+                table.AddRow("-o", "Specify an output subfolder. Defaults to \"output\"");
+                //table.AddRow("-s", "The size of each file [Not support yet]");
                 AnsiConsole.Write(table);
 
                 return;
