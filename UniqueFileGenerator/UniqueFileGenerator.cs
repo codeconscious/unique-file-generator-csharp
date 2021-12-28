@@ -148,7 +148,7 @@ namespace UniqueFileGenerator
                         throw new InvalidOperationException("Was a flag specified?");
 
                     if (argDict.ContainsKey(currentFlag))
-                        argDict[currentFlag] = argDict[currentFlag] + thisArg; // use SB?
+                        argDict[currentFlag] += thisArg;
                     else
                         argDict.Add(currentFlag, thisArg);
                 }
