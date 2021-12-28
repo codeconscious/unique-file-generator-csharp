@@ -18,6 +18,7 @@ public static class Program
         try
         {
             settings = new Settings(args);
+            SaveFiles(settings);
         }
         catch (Exception ex)
         {
@@ -25,6 +26,11 @@ public static class Program
                 return;
         }
 
+        WriteLine($"{settings.Count} files created.");
+    }
+
+    private static void SaveFiles(Settings settings)
+    {
         Directory.CreateDirectory(settings.OutputDirectory);
 
         var random = new Random();
@@ -59,8 +65,6 @@ public static class Program
 
             fileStream.Write(content, 0, content.Length);
         }
-
-        WriteLine($"{settings.Count} files created.");
     }
 
     private static string GetRandomChars(uint count)
