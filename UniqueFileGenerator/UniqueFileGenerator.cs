@@ -55,17 +55,15 @@ namespace UniqueFileGenerator
             {
                 var rndNumber = random.Next(1000, int.MaxValue);
 
-                // TODO: Clean this up. (Switch expression?)
-                string postPrefixMaybeSpace;
-                if (settings.Prefix.Length > 0)
-                    if (noSpaceChars.Contains(settings.Prefix[^1]))
-                        postPrefixMaybeSpace = string.Empty;
-                    else
-                        postPrefixMaybeSpace = " ";
-                else
-                    postPrefixMaybeSpace = string.Empty;
+                // Only add a space after a prefix if a prefix is specified
+                // and its last character is not a special no-space one.
+                var postPrefixDivider = settings.Prefix switch
+                {
+                    { Length: > 0 } when !noSpaceChars.Contains(settings.Prefix[^1]) => " ",
+                    _ => string.Empty
+                };
 
-                var fileName = settings.Prefix + postPrefixMaybeSpace + rndNumber;
+                var fileName = settings.Prefix + postPrefixDivider + rndNumber;
 
                 var path = settings.OutputDirectory + fileName + settings.Extension;
 
