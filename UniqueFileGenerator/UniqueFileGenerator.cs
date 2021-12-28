@@ -95,7 +95,7 @@ public static class Program
         const string usage = "Usage: Pass in the number of files, and then optionally add any additional arguments.\n\n" +
             "Examples:\n" +
             "   uniquefilegen 10  (Creates 10 files with the default settings)\n" +
-            "   uniquefilegen 1000 -p TEST- e txt  (Creates 1,000 files in the format \"TEST-12345.txt\")";
+            "   uniquefilegen 1000 -p TEST- e txt  [gray](Creates 1,000 files in the format \"TEST-12345.txt\")[/]";
         outerTable.AddRow(usage);
         outerTable.AddEmptyRow();
         // outerTable.AddRow("Usage: uniquefilegen [count] [arguments]");
@@ -108,9 +108,9 @@ public static class Program
         argTable.HideHeaders();
         argTable.Columns[0].PadRight(3);
         argTable.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with \".\" or \"-\" or \"_\".");
-        argTable.AddRow("-e", "The desired file extension. (The opening period is unnecessary.)");
-        argTable.AddRow("-o", "Specify an output subfolder. Defaults to \"output\"");
-        //table.AddRow("-s", "The size of each file [Not support yet]");
+        argTable.AddRow("-e", "The desired file extension (with no opening period).");
+        argTable.AddRow("-o", "Specify an output subfolder. Defaults to \"output\". Multiple terms are okay.");
+        argTable.AddRow("-s", "The size of each file in bytes");
 
         outerTable.AddRow(argTable);
 
