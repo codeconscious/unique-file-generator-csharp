@@ -10,8 +10,6 @@ namespace UniqueFileGenerator
 {
     public class Program
     {
-        private static List<string> SupportedFlags = new() { "-p", "-e", "-o" };
-
         public static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -32,11 +30,21 @@ namespace UniqueFileGenerator
                 return;
             }
 
-            var settings = VerifySetUpArgs(args);
+            Settings settings;
+            try
+            {
+                settings = new Settings(args);
+            }
+            catch (System.Exception ex)
+            {
+                 AnsiConsole.WriteException(ex, ExceptionFormats.ShortenTypes);
+                 return;
+            }
 
             Directory.CreateDirectory(settings.OutputDirectory);
 
             var random = new Random();
+            var noSpaceChars = new char[] { '_', '-' }; // Or any non-alphanumeric char?
 
             // TODO: Support checking for used ints.
             //var usedValues = new List<int>();
@@ -47,7 +55,17 @@ namespace UniqueFileGenerator
             {
                 var rndNumber = random.Next(1000, int.MaxValue);
 
-                var fileName = settings.Prefix + " " + rndNumber;
+                // TODO: Clean this up. (Switch expression?)
+                string postPrefixMaybeSpace;
+                if (settings.Prefix.Length > 0)
+                    if (noSpaceChars.Contains(settings.Prefix[^1]))
+                        postPrefixMaybeSpace = string.Empty;
+                    else
+                        postPrefixMaybeSpace = " ";
+                else
+                    postPrefixMaybeSpace = string.Empty;
+
+                var fileName = settings.Prefix + postPrefixMaybeSpace + rndNumber;
 
                 var path = settings.OutputDirectory + fileName + settings.Extension;
 
@@ -58,8 +76,35 @@ namespace UniqueFileGenerator
 
             WriteLine($"{settings.Count} files created.");
         }
+    }
 
-        private static Settings VerifySetUpArgs(string[] args)
+    public class Settings
+    {
+        public int Count { get; init; }
+        public string Prefix { get; init; }
+        public string Extension { get; init; }
+        public string OutputDirectory { get; init; }
+
+        private static List<string> SupportedFlags = new() { "-p", "-e", "-o", "-s" };
+
+        public Settings(string[] args)
+        {
+            var (count, argPairs) = ParseArgs(args);
+
+            Count = count > 0
+                ? count
+                : throw new ArgumentOutOfRangeException(nameof(count));
+
+            Prefix = argPairs.ContainsKey("-p") ? argPairs["-p"] : string.Empty;
+
+            Extension = "." + (argPairs.ContainsKey("-e") ? argPairs["-e"] : string.Empty);
+
+            OutputDirectory = argPairs.ContainsKey("-o")
+                ? argPairs["-o"]
+                : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
+        }
+
+        private static (int Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
         {
             if (args.Length == 0)
                 throw new ArgumentException("The count must be specified", nameof(args));
@@ -102,30 +147,7 @@ namespace UniqueFileGenerator
             foreach (var arg in argDict)
                 WriteLine($"{arg.Key}: {arg.Value}");
 
-            return new Settings(expectedCount, argDict);
-        }
-    }
-
-    public class Settings
-    {
-        public int Count { get; init; }
-        public string Prefix { get; init; }
-        public string Extension { get; init; }
-        public string OutputDirectory { get; init; }
-
-        public Settings(int count, IDictionary<string, string> argPairs)
-        {
-            Count = count > 0
-                ? count
-                : throw new ArgumentOutOfRangeException(nameof(count));
-
-            Prefix = argPairs.ContainsKey("-p") ? argPairs["-p"] : string.Empty;
-
-            Extension = argPairs.ContainsKey("-e") ? argPairs["-e"] : string.Empty;
-
-            OutputDirectory = argPairs.ContainsKey("-o")
-                ? argPairs["-o"]
-                : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
+            return (expectedCount, argDict);
         }
     }
 }
