@@ -17,16 +17,13 @@ namespace UniqueFileGenerator
                 WriteLine($"Create unique files with unique contents using random numbers. Saves to ./output directory.");
                 WriteLine($"Arguments:");
 
-                // var table = new Table();
-                // table.AddColumn("Arg");
-                // table.AddColumn("Description");
-                // table.AddRow("-p", "File name prefix");
-                // table.AddRow("-e", "The desired file extension. (The opening period is optional.)");
-                // AnsiConsole.Write(table);
+                var table = new Table();
+                table.AddColumn("Arg");
+                table.AddColumn("Description");
+                table.AddRow("-p", "File name prefix");
+                table.AddRow("-e", "The desired file extension. (The opening period is optional.)");
+                AnsiConsole.Write(table);
 
-                WriteLine($"  - The number of files to make");
-                WriteLine($"  - (Optional) File name prefix");
-                WriteLine($"  - (Optional, but must be used with the second argument) The desired file extension (excluding the opening period)");
                 return;
             }
 
@@ -89,9 +86,7 @@ namespace UniqueFileGenerator
         {
             var (count, argPairs) = ParseArgs(args);
 
-            Count = count > 0
-                ? count
-                : throw new ArgumentOutOfRangeException(nameof(count));
+            Count = count;
 
             Prefix = argPairs.ContainsKey("-p") ? argPairs["-p"] : string.Empty;
 
@@ -109,11 +104,11 @@ namespace UniqueFileGenerator
 
             var argQueue = new Queue<string>(args);
 
-            var expectedCountText = argQueue.Dequeue();
-            if (!int.TryParse(expectedCountText, out var expectedCount))
+            var countText = argQueue.Dequeue();
+            if (!int.TryParse(countText, out var count))
                 throw new InvalidOperationException("You must enter a count as the first argument.");
-            if (expectedCount < 1)
-                throw new ArgumentOutOfRangeException(nameof(expectedCount));
+            if (count < 1)
+                throw new ArgumentOutOfRangeException(nameof(count), "An invalid file count was supplied.");
 
             var argDict = new Dictionary<string, string>();
 
@@ -129,7 +124,7 @@ namespace UniqueFileGenerator
                     else
                         currentFlag = thisArg;
                 }
-                else // Not a flag
+                else // Not a flag, so treat as a value.
                 {
                     if (string.IsNullOrWhiteSpace(currentFlag))
                         throw new InvalidOperationException("Was a flag specified?");
@@ -141,11 +136,12 @@ namespace UniqueFileGenerator
                 }
             }
 
-            WriteLine("Count: " + expectedCount);
+            // For testing only.
+            WriteLine("Count: " + count);
             foreach (var arg in argDict)
                 WriteLine($"{arg.Key}: {arg.Value}");
 
-            return (expectedCount, argDict);
+            return (count, argDict);
         }
     }
 }
