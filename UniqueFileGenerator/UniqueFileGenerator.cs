@@ -10,6 +10,8 @@ namespace UniqueFileGenerator
 {
     public class Program
     {
+        private static List<string> SupportedFlags = new() { "-p", "-e", "-o" };
+
         public static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -59,7 +61,6 @@ namespace UniqueFileGenerator
 
             // IDEA: Perhaps generate the numbers in a hashset or queue first, then dequeue them.
 
-            // Should this be parallel?
             for (var i = 0; i < count; i++)
             {
                 var rndNumber = random.Next(1000, int.MaxValue);
@@ -74,6 +75,69 @@ namespace UniqueFileGenerator
             }
 
             WriteLine($"{count} files created.");
+        }
+
+        private static Settings VerifySetUpArgs(string[] args)
+        {
+            if (args.Length == 0)
+                throw new ArgumentException("The count must be specified", nameof(args));
+
+            var argQueue = new Queue<string>(args);
+
+            var expectedCountText = argQueue.Dequeue();
+            if (!int.TryParse(expectedCountText, out var expectedCount))
+                throw new InvalidOperationException("You must enter a count as the first argument.");
+            if (expectedCount < 1)
+                throw new ArgumentOutOfRangeException(nameof(expectedCount));
+
+            var argDict = new Dictionary<string, string>();
+
+            var currentFlag = "";
+            while (argQueue.Any())
+            {
+                var thisArg = argQueue.Dequeue();
+
+                if (SupportedFlags.Contains(thisArg))
+                {
+                    if (argDict.ContainsKey(thisArg))
+                        throw new InvalidOperationException("A flag can only be specified once.");
+                    else
+                        currentFlag = thisArg;
+                }
+                else // Not a flag
+                {
+                    if (string.IsNullOrWhiteSpace(currentFlag))
+                        throw new InvalidOperationException("Was a flag specified?");
+
+                    if (argDict.ContainsKey(currentFlag))
+                        argDict[currentFlag] = argDict[currentFlag] + thisArg; // use SB?
+                    else
+                        argDict.Add(currentFlag, thisArg);
+                }
+            }
+
+            return new Settings(expectedCount, argDict);
+        }
+    }
+
+    public class Settings
+    {
+        public int Count { get; init; }
+        public string Prefix { get; init; }
+        public string Extension { get; init; }
+        public string OutputDirectory { get; init; }
+
+        public Settings(int count, IDictionary<string, string> argPairs)
+        {
+            Count = count > 0
+                ? count
+                : throw new ArgumentOutOfRangeException(nameof(count));
+
+            Prefix = argPairs.ContainsKey("-p") ? argPairs["-p"] : string.Empty;
+            Extension = argPairs.ContainsKey("-e") ? argPairs["-e"] : string.Empty;
+            OutputDirectory = argPairs.ContainsKey("-o")
+                ? argPairs["-o"]
+                : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
         }
     }
 }
