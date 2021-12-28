@@ -66,7 +66,7 @@ public class Settings
                     throw new InvalidOperationException("Was a flag specified?");
 
                 if (argDict.ContainsKey(currentFlag))
-                    argDict[currentFlag] += thisArg;
+                    argDict[currentFlag] += " " + thisArg;
                 else
                     argDict.Add(currentFlag, thisArg);
             }
