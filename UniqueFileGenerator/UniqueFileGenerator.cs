@@ -14,18 +14,34 @@ namespace UniqueFileGenerator
         {
             if (args.Length == 0)
             {
-                WriteLine($"Create unique files with unique contents using random numbers. Saves to ./output directory.");
-                WriteLine($"Arguments:");
+                var outerTable = new Table();
+                outerTable.AddColumn("Unique File Generator");
+                outerTable.AddRow("Create unique files with unique contents using random numbers.");
+                outerTable.AddEmptyRow();
 
-                var table = new Table();
-                table.AddColumn("Arg");
-                table.AddColumn("Description");
-                table.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with - or _.");
-                table.AddRow("-e", "The desired file extension. (The opening period is unnecessary.)");
-                table.AddRow("-o", "Specify an output subfolder. Defaults to \"output\"");
+                const string usage = "Usage: Pass in the number of files, and then optionally add any additional arguments.\n\n" +
+                    "Examples:\n" +
+                    "   uniquefilegen 10  (Creates 10 files with the default settings)\n" +
+                    "   uniquefilegen 1000 -p TEST- e txt  (Creates 1,000 files in the format \"TEST-12345.txt\")";
+                outerTable.AddRow(usage);
+                outerTable.AddEmptyRow();
+                // outerTable.AddRow("Usage: uniquefilegen [count] [arguments]");
+                // outerTable.AddRow("Example: uniquefilegen 10 [arguments]");
+
+                var argTable = new Table();
+                argTable.Border(TableBorder.None);
+                argTable.AddColumn("Arg");
+                argTable.AddColumn("Description");
+                argTable.HideHeaders();
+                argTable.Columns[0].PadRight(3);
+                argTable.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with - or _.");
+                argTable.AddRow("-e", "The desired file extension. (The opening period is unnecessary.)");
+                argTable.AddRow("-o", "Specify an output subfolder. Defaults to \"output\"");
                 //table.AddRow("-s", "The size of each file [Not support yet]");
-                AnsiConsole.Write(table);
 
+                outerTable.AddRow(argTable);
+
+                AnsiConsole.Write(outerTable);
                 return;
             }
 
