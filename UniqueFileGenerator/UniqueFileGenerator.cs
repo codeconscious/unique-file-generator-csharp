@@ -98,7 +98,7 @@ namespace UniqueFileGenerator
         public string Extension { get; init; }
         public string OutputDirectory { get; init; }
 
-        private static List<string> SupportedFlags = new() { "-p", "-e", "-o", "-s" };
+        private static readonly List<string> SupportedFlags = new() { "-p", "-e", "-o", "-s" };
 
         public Settings(string[] args)
         {
@@ -111,7 +111,7 @@ namespace UniqueFileGenerator
             Extension = "." + (argPairs.ContainsKey("-e") ? argPairs["-e"] : string.Empty);
 
             OutputDirectory = argPairs.ContainsKey("-o")
-                ? argPairs["-o"]
+                ? "." + Path.DirectorySeparatorChar + argPairs["-o"] + Path.DirectorySeparatorChar
                 : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
         }
 
