@@ -32,27 +32,9 @@ namespace UniqueFileGenerator
                 return;
             }
 
-            if (!int.TryParse(args[0], out var count) || count < 1)
-            {
-                WriteLine($"Invalid count specified ({count}).");
-                return;
-            }
+            var settings = VerifySetUpArgs(args);
 
-            var prefix = args.Length > 1 && !string.IsNullOrEmpty(args[1])
-                ? args[1]
-                : string.Empty;
-
-            var extension = args.Length > 2 && !string.IsNullOrEmpty(args[2])
-                ? "." + args[2]
-                : string.Empty;
-
-            // TODO: Think about if and how to support passing a path.
-            // var directory = args.Length > 3 && !string.IsNullOrEmpty(args[3])
-            //     ? args[2] + Path.DirectorySeparatorChar
-            //     : "." + Path.DirectorySeparatorChar;
-            var directory = "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
-
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(settings.OutputDirectory);
 
             var random = new Random();
 
@@ -61,20 +43,20 @@ namespace UniqueFileGenerator
 
             // IDEA: Perhaps generate the numbers in a hashset or queue first, then dequeue them.
 
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < settings.Count; i++)
             {
                 var rndNumber = random.Next(1000, int.MaxValue);
 
-                var fileName = prefix + " " + rndNumber;
+                var fileName = settings.Prefix + " " + rndNumber;
 
-                var path = directory + fileName + extension;
+                var path = settings.OutputDirectory + fileName + settings.Extension;
 
                 using var fileStream = File.Create(path);
                 var content = new UTF8Encoding(true).GetBytes(fileName);
                 fileStream.Write(content, 0, content.Length);
             }
 
-            WriteLine($"{count} files created.");
+            WriteLine($"{settings.Count} files created.");
         }
 
         private static Settings VerifySetUpArgs(string[] args)
@@ -116,6 +98,10 @@ namespace UniqueFileGenerator
                 }
             }
 
+            WriteLine("Count: " + expectedCount);
+            foreach (var arg in argDict)
+                WriteLine($"{arg.Key}: {arg.Value}");
+
             return new Settings(expectedCount, argDict);
         }
     }
@@ -134,7 +120,9 @@ namespace UniqueFileGenerator
                 : throw new ArgumentOutOfRangeException(nameof(count));
 
             Prefix = argPairs.ContainsKey("-p") ? argPairs["-p"] : string.Empty;
+
             Extension = argPairs.ContainsKey("-e") ? argPairs["-e"] : string.Empty;
+
             OutputDirectory = argPairs.ContainsKey("-o")
                 ? argPairs["-o"]
                 : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
