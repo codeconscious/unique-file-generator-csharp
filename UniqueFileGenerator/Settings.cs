@@ -73,9 +73,9 @@ public class Settings
         }
 
         // For testing only.
-        WriteLine("Count: " + count);
-        foreach (var arg in argDict)
-            WriteLine($"{arg.Key}: {arg.Value}");
+        // WriteLine("Count: " + count);
+        // foreach (var arg in argDict)
+        //     WriteLine($"{arg.Key}: {arg.Value}");
 
         return (count, argDict);
     }
