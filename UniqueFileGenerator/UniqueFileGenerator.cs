@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
+using Spectre.Console;
 
 namespace UniqueFileGenerator
 {
@@ -15,6 +16,14 @@ namespace UniqueFileGenerator
             {
                 WriteLine($"Create unique files with unique contents using random numbers. Saves to ./output directory.");
                 WriteLine($"Arguments:");
+
+                // var table = new Table();
+                // table.AddColumn("Arg");
+                // table.AddColumn("Description");
+                // table.AddRow("-p", "File name prefix");
+                // table.AddRow("-e", "The desired file extension. (The opening period is optional.)");
+                // AnsiConsole.Write(table);
+
                 WriteLine($"  - The number of files to make");
                 WriteLine($"  - (Optional) File name prefix");
                 WriteLine($"  - (Optional, but must be used with the second argument) The desired file extension (excluding the opening period)");
