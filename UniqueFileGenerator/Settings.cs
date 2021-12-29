@@ -23,9 +23,9 @@ public class Settings
             ? argPairs["-p"]
             : string.Empty;
 
-        Extension = "." + (argPairs.ContainsKey("-e")
-            ? argPairs["-e"]
-            : string.Empty);
+        Extension = argPairs.ContainsKey("-e")
+            ? "." + argPairs["-e"]
+            : string.Empty;
 
         OutputDirectory = argPairs.ContainsKey("-o")
             ? "." + Path.DirectorySeparatorChar + argPairs["-o"] + Path.DirectorySeparatorChar
