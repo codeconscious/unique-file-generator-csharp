@@ -8,6 +8,10 @@ public static class Program
 {
     public static void Main(string[] args)
     {
+// #if DEBUG
+//             args = new[] { "20" };
+// #endif
+
         if (args.Length == 0)
         {
             PrintInstructions();
@@ -35,7 +39,7 @@ public static class Program
 
         var random = new Random();
         var noSpaceChars = new char[] { '_', '-', '.' }; // Or any non-alphanumeric char?
-        var formatString = string.Concat(Enumerable.Repeat("0", settings.Digits));
+        const string formatString = "0000000000";
 
         // TODO: Support checking for used ints.
         //var usedValues = new List<int>();
