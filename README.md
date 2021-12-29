@@ -15,7 +15,7 @@ Arg. | Description
 ---- | :----
 -p | Add a filename prefix. If the prefix ends with certain characters ("-", "_", or "."), no space will be added after the prefix.
 -e | The file extension with which files should be generated. (If not specified, no extension is added.)
--s | The desired size of each file, which will be populated with random alphanumeric characters. (If not specified, each file will only contain its own name.)
+-s | The desired size of each file in bytes, which will be populated with random alphanumeric characters. (If not specified, each file will only contain its own name.)
 -o | The output subfolder. Will be created if needed. (If not supplied, "output" is used by default).
 
 *Examples:*
