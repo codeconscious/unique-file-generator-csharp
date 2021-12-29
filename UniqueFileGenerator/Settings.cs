@@ -7,7 +7,7 @@ public class Settings
     public string Prefix { get; init; }
     public string Extension { get; init; }
     public string OutputDirectory { get; init; }
-    public uint? SizeInBytes { get; init; }
+    public int? SizeInBytes { get; init; }
 
     private static readonly List<string> SupportedFlags = new() { "-p", "-e", "-o", "-s" };
 
@@ -32,7 +32,7 @@ public class Settings
             : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
 
         SizeInBytes = argPairs.ContainsKey("-s")
-            ? uint.Parse(argPairs["-s"])
+            ? int.Parse(argPairs["-s"])
             : null;
     }
 

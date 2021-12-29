@@ -9,7 +9,7 @@ public static class Program
     public static void Main(string[] args)
     {
 // #if DEBUG
-//             args = new[] { "20" };
+//             args = new[] { "20", "-p", "TEST-" };
 // #endif
 
         if (args.Length == 0)
@@ -39,37 +39,32 @@ public static class Program
 
         var random = new Random();
         var noSpaceChars = new char[] { '_', '-', '.' }; // Or any non-alphanumeric char?
-        const string formatString = "0000000000";
+
+        // Only add a space after a prefix if a prefix is specified
+        // and its last character is not a special no-space one.
+        var postPrefixDivider = settings.Prefix switch
+        {
+            { Length: > 0 } when !noSpaceChars.Contains(settings.Prefix[^1]) => " ",
+            _ => string.Empty
+        };
 
         var rndCharGenerator = new RandomCharacterGenerator();
 
-        // TODO: Support checking for used ints.
-        //var usedValues = new List<int>();
+        //var idQueue = new Queue<string>(settings.Count);
+        var baseFileNameQueue = rndCharGenerator.GetCharacterSet(settings.Count, 10, true);
+        var prefixedFileNameQueue = new Queue<string>(baseFileNameQueue.Select(n => settings.Prefix + postPrefixDivider + n));
 
-        // IDEA: Perhaps generate the numbers in a hashset or queue first, then dequeue them.
+        var contentQueue = settings.SizeInBytes.HasValue
+            ? new Queue<string>(rndCharGenerator.GetCharacterSet(settings.Count, settings.SizeInBytes.Value, true))
+            : new Queue<string>(prefixedFileNameQueue);
 
-        for (var i = 0; i < settings.Count; i++)
+        while (prefixedFileNameQueue.Any())
         {
-            var rndNumber = rndCharGenerator.GetChars(10, numbersOnly: true);
-
-            // Only add a space after a prefix if a prefix is specified
-            // and its last character is not a special no-space one.
-            var postPrefixDivider = settings.Prefix switch
-            {
-                { Length: > 0 } when !noSpaceChars.Contains(settings.Prefix[^1]) => " ",
-                _ => string.Empty
-            };
-
-            var fileName = settings.Prefix + postPrefixDivider + rndNumber;
-
+            var fileName = prefixedFileNameQueue.Dequeue();
             var path = settings.OutputDirectory + fileName + settings.Extension;
+            var content = new UTF8Encoding(true).GetBytes(contentQueue.Dequeue());
 
             using var fileStream = File.Create(path);
-
-            var content = settings.SizeInBytes.HasValue
-                ? new UTF8Encoding(true).GetBytes(rndCharGenerator.GetChars(settings.SizeInBytes.Value, false))
-                : new UTF8Encoding(true).GetBytes(fileName);
-
             fileStream.Write(content, 0, content.Length);
         }
     }
