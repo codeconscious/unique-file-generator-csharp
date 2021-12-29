@@ -41,6 +41,8 @@ public static class Program
         var noSpaceChars = new char[] { '_', '-', '.' }; // Or any non-alphanumeric char?
         const string formatString = "0000000000";
 
+        var rndCharGenerator = new RandomCharacterGenerator();
+
         // TODO: Support checking for used ints.
         //var usedValues = new List<int>();
 
@@ -48,7 +50,7 @@ public static class Program
 
         for (var i = 0; i < settings.Count; i++)
         {
-            var rndNumber = random.Next(1000, int.MaxValue);
+            var rndNumber = rndCharGenerator.GetChars(10, numbersOnly: true);
 
             // Only add a space after a prefix if a prefix is specified
             // and its last character is not a special no-space one.
@@ -58,36 +60,18 @@ public static class Program
                 _ => string.Empty
             };
 
-            var fileName = settings.Prefix + postPrefixDivider + rndNumber.ToString(formatString);
+            var fileName = settings.Prefix + postPrefixDivider + rndNumber;
 
             var path = settings.OutputDirectory + fileName + settings.Extension;
 
             using var fileStream = File.Create(path);
 
             var content = settings.SizeInBytes.HasValue
-                ? new UTF8Encoding(true).GetBytes(GetRandomChars(settings.SizeInBytes.Value))
+                ? new UTF8Encoding(true).GetBytes(rndCharGenerator.GetChars(settings.SizeInBytes.Value, false))
                 : new UTF8Encoding(true).GetBytes(fileName);
 
             fileStream.Write(content, 0, content.Length);
         }
-    }
-
-    private static string GetRandomChars(uint count)
-    {
-        if (count == 0)
-            return string.Empty;
-
-        const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var outputChars = new char[count];
-
-        var random = new Random();
-
-        for (int i = 0; i < outputChars.Length; i++)
-        {
-            outputChars[i] = allowedChars[random.Next(allowedChars.Length)];
-        }
-
-        return new string(outputChars);
     }
 
     private static void PrintInstructions()
