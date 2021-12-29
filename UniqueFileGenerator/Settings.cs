@@ -3,6 +3,7 @@ namespace UniqueFileGenerator;
 public class Settings
 {
     public int Count { get; init; }
+    public int Digits { get; init; }
     public string Prefix { get; init; }
     public string Extension { get; init; }
     public string OutputDirectory { get; init; }
@@ -15,6 +16,8 @@ public class Settings
         var (count, argPairs) = ParseArgs(args);
 
         Count = count;
+
+        Digits = count.ToString().Length;
 
         Prefix = argPairs.ContainsKey("-p")
             ? argPairs["-p"]

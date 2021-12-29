@@ -35,6 +35,7 @@ public static class Program
 
         var random = new Random();
         var noSpaceChars = new char[] { '_', '-', '.' }; // Or any non-alphanumeric char?
+        var formatString = string.Concat(Enumerable.Repeat("0", settings.Digits));
 
         // TODO: Support checking for used ints.
         //var usedValues = new List<int>();
@@ -53,7 +54,7 @@ public static class Program
                 _ => string.Empty
             };
 
-            var fileName = settings.Prefix + postPrefixDivider + rndNumber;
+            var fileName = settings.Prefix + postPrefixDivider + rndNumber.ToString(formatString);
 
             var path = settings.OutputDirectory + fileName + settings.Extension;
 
