@@ -2,22 +2,20 @@ namespace UniqueFileGenerator;
 
 public class Settings
 {
-    public int Count { get; init; }
-    public int Digits { get; init; }
+    public int FileCount { get; init; }
     public string Prefix { get; init; }
     public string Extension { get; init; }
     public string OutputDirectory { get; init; }
     public int? SizeInBytes { get; init; }
 
-    private static readonly List<string> SupportedFlags = new() { "-p", "-e", "-o", "-s" };
+    private static readonly List<string> SupportedFlags =
+        new() { "-p", "-e", "-o", "-s" };
 
     public Settings(string[] args)
     {
-        var (count, argPairs) = ParseArgs(args);
+        var (fileCount, argPairs) = ParseArgs(args);
 
-        Count = count;
-
-        Digits = count.ToString().Length;
+        FileCount = fileCount;
 
         Prefix = argPairs.ContainsKey("-p")
             ? argPairs["-p"]

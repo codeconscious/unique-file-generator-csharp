@@ -36,7 +36,7 @@ public static class Program
             return;
         }
 
-        WriteLine($"{settings.Count} files created.");
+        WriteLine($"{settings.FileCount} files created.");
     }
 
     private static void SaveFiles(Settings settings, string charBank)
@@ -62,11 +62,11 @@ public static class Program
         var stringService = new RandomStringService(charBank);
 
         //var idQueue = new Queue<string>(settings.Count);
-        var baseFileNameQueue = stringService.GetCharacterCollection(settings.Count, 10);
+        var baseFileNameQueue = stringService.GetCharacterCollection(settings.FileCount, 10);
         var prefixedFileNameQueue = new Queue<string>(baseFileNameQueue.Select(n => settings.Prefix + postPrefixDivider + n));
 
         var contentQueue = settings.SizeInBytes.HasValue
-            ? new Queue<string>(stringService.GetCharacterCollection(settings.Count, settings.SizeInBytes.Value))
+            ? new Queue<string>(stringService.GetCharacterCollection(settings.FileCount, settings.SizeInBytes.Value))
             : new Queue<string>(prefixedFileNameQueue);
 
         while (prefixedFileNameQueue.Any())
