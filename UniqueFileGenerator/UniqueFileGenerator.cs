@@ -38,13 +38,12 @@ public static class Program
         Directory.CreateDirectory(settings.OutputDirectory);
 
         var random = new Random();
-        var noSpaceChars = new char[] { '_', '-', '.' }; // Or any non-alphanumeric char?
 
         // Only add a space after a prefix if a prefix is specified
         // and its last character is not a special no-space one.
         var postPrefixDivider = settings.Prefix switch
         {
-            { Length: > 0 } when !noSpaceChars.Contains(settings.Prefix[^1]) => " ",
+            { Length: > 0 } when char.IsLetterOrDigit(settings.Prefix[^1]) => " ",
             _ => string.Empty
         };
 
@@ -91,7 +90,7 @@ public static class Program
         argTable.AddColumn("Description");
         argTable.HideHeaders();
         argTable.Columns[0].PadRight(3);
-        argTable.AddRow("-p", "File name prefix. A space will be added afterward unless it ends with \".\" or \"-\" or \"_\".");
+        argTable.AddRow("-p", "File name prefix. If the last character is alphanumeric, a space will be added after it.");
         argTable.AddRow("-e", "The desired file extension (with no opening period).");
         argTable.AddRow("-o", "Specify an output subfolder. Defaults to \"output\". Multiple terms are okay.");
         argTable.AddRow("-s", "The size of each file in bytes. (They will be populated with random alphanumeric characters.)");
