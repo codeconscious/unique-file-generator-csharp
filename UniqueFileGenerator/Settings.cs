@@ -51,6 +51,8 @@ public class Settings
 
         var argDict = new Dictionary<string, string>();
 
+        // Iterate through the args. Any non-flag arg is considered to be related to the previous one.
+        // If there are multiple args for any such flag, they will be combined in a single string.
         var currentFlag = "";
         while (argQueue.Any())
         {
