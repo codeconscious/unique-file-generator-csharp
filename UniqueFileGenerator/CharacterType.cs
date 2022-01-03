@@ -4,6 +4,6 @@ namespace UniqueFileGenerator;
 public enum CharacterType
 {
     UpperCaseLetter = 0,
-    LowerCaseLetter = 1,
-    Numeric = 2
+    LowerCaseLetter = 1 << 0,
+    Numeric =         1 << 1
 }
