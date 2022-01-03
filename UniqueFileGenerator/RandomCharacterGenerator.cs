@@ -7,28 +7,28 @@ public sealed class RandomCharacterGenerator
 
     private static Random Random { get; } = new();
 
-    public IEnumerable<string> GetCharacterSet(int items, int length, bool numbersOnly)
+    public IEnumerable<string> GetCharacterCollection(int stringCount, int stringLength, bool numbersOnly)
     {
-        if (items < 0)
+        if (stringCount < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(items), "The number of items must be greater than zero.");
+                nameof(stringCount), "The count of desired strings must be greater than zero.");
         }
 
-        if (length < 0)
+        if (stringLength < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(length), "The length must be greater than zero.");
+                nameof(stringLength), "The length of each string must be greater than zero.");
         }
 
-        if (items == 0)
+        if (stringCount == 0)
             return Enumerable.Empty<string>();
 
         var set = new HashSet<string>();
 
-        while (set.Count < items)
+        while (set.Count < stringCount)
         {
-            set.Add(GetChars(length, numbersOnly));
+            set.Add(GetChars(stringLength, numbersOnly));
         }
 
         return set;
