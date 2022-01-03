@@ -5,12 +5,13 @@ namespace UniqueFileGenerator;
 /// </summary>
 public sealed class CharacterService
 {
-    private readonly Dictionary<CharacterType, string> CharacterDictionary = new()
-    {
-        { CharacterType.UpperCaseLetter, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
-        { CharacterType.LowerCaseLetter, "abcdefghijklmnopqrstuvwxyz" },
-        { CharacterType.Numeric,         "0123456789" }
-    };
+    private readonly IReadOnlyDictionary<CharacterType, string> CharacterDictionary =
+        new Dictionary<CharacterType, string>()
+        {
+            { CharacterType.UpperCaseLetter, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+            { CharacterType.LowerCaseLetter, "abcdefghijklmnopqrstuvwxyz" },
+            { CharacterType.Numeric,         "0123456789" }
+        };
 
     public string GetCharacters(CharacterType charTypes)
     {

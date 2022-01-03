@@ -8,8 +8,9 @@ public class Settings
     public string OutputDirectory { get; }
     public int? SizeInBytes { get; }
 
-    private static readonly List<string> SupportedFlags =
-        new() { "-p", "-e", "-o", "-s" };
+    private static readonly IReadOnlyList<string> SupportedFlags =
+        new List<string>()
+            { "-p", "-e", "-o", "-s" };
 
     public Settings(string[] args)
     {
