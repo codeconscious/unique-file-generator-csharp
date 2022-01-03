@@ -1,9 +1,12 @@
 namespace UniqueFileGenerator;
 
+/// <summary>
+/// Creates and delivers collections of random strings.
+/// </summary>
 public sealed class RandomStringService
 {
     private string CharacterBank { get; }
-    private static Random Random { get; } = new();
+    private Random Random { get; } = new();
 
     public RandomStringService(string characterBank)
     {
@@ -16,6 +19,11 @@ public sealed class RandomStringService
         CharacterBank = characterBank;
     }
 
+    /// <summary>
+    /// Gets a collections of strings, each containing random characters.
+    /// </summary>
+    /// <param name="count">The number of strings.</param>
+    /// <param name="lengthOfEach">The length of each string.</param>
     public IEnumerable<string> GetCharacterCollection(int count, int lengthOfEach)
     {
         if (count < 0)
@@ -43,6 +51,10 @@ public sealed class RandomStringService
         return set;
     }
 
+    /// <summary>
+    /// Gets a string of random characters.
+    /// </summary>
+    /// <param name="length">The desired string length.</param>
     private string GetRandomChars(int length)
     {
         if (length == 0)

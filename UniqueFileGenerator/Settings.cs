@@ -43,11 +43,17 @@ public class Settings
 
         var argQueue = new Queue<string>(args);
 
-        var countText = argQueue.Dequeue();
-        if (!int.TryParse(countText, out var count))
-            throw new InvalidOperationException("You must enter a count as the first argument.");
-        if (count < 1)
-            throw new ArgumentOutOfRangeException(nameof(count), "An invalid file count was supplied.");
+        if (!int.TryParse(argQueue.Dequeue(), out var fileCount))
+        {
+            throw new InvalidOperationException(
+                "You must enter a count as the first argument.");
+        }
+
+        if (fileCount < 1)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(fileCount), "An invalid file count was supplied.");
+        }
 
         var argDict = new Dictionary<string, string>();
 
@@ -68,7 +74,10 @@ public class Settings
             else // Not a flag, so treat as a value.
             {
                 if (string.IsNullOrWhiteSpace(currentFlag))
-                    throw new InvalidOperationException("Was a flag specified?");
+                {
+                    throw new InvalidOperationException(
+                        $"A flag was not specified for {thisArg}.");
+                }
 
                 if (argDict.ContainsKey(currentFlag))
                     argDict[currentFlag] += " " + thisArg;
@@ -77,11 +86,11 @@ public class Settings
             }
         }
 
-        // For testing only.
+        // For testing only:
         // WriteLine("Count: " + count);
         // foreach (var arg in argDict)
         //     WriteLine($"{arg.Key}: {arg.Value}");
 
-        return (count, argDict);
+        return (fileCount, argDict);
     }
 }

@@ -52,22 +52,21 @@ public static class Program
 
         var random = new Random();
 
-        // Only add a space after a prefix if a prefix is specified
-        // and its last character is not a special no-space one.
+        // Only add a post-prefix space for non-alphanumeric characters.
         var postPrefixDivider = settings.Prefix switch
         {
             { Length: > 0 } when char.IsLetterOrDigit(settings.Prefix[^1]) => " ",
             _ => string.Empty
         };
 
-        var rndStringService = new RandomStringService(charBank);
+        var stringService = new RandomStringService(charBank);
 
         //var idQueue = new Queue<string>(settings.Count);
-        var baseFileNameQueue = rndStringService.GetCharacterCollection(settings.Count, 10);
+        var baseFileNameQueue = stringService.GetCharacterCollection(settings.Count, 10);
         var prefixedFileNameQueue = new Queue<string>(baseFileNameQueue.Select(n => settings.Prefix + postPrefixDivider + n));
 
         var contentQueue = settings.SizeInBytes.HasValue
-            ? new Queue<string>(rndStringService.GetCharacterCollection(settings.Count, settings.SizeInBytes.Value))
+            ? new Queue<string>(stringService.GetCharacterCollection(settings.Count, settings.SizeInBytes.Value))
             : new Queue<string>(prefixedFileNameQueue);
 
         while (prefixedFileNameQueue.Any())

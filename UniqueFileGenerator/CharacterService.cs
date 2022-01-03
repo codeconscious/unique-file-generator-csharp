@@ -1,5 +1,8 @@
 namespace UniqueFileGenerator;
 
+/// <summary>
+/// Sets up a collection of characters that can be chosen at random.
+/// </summary>
 public sealed class CharacterService
 {
     private readonly Dictionary<CharacterType, string> CharacterDictionary = new()
