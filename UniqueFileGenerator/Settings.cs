@@ -2,11 +2,11 @@ namespace UniqueFileGenerator;
 
 public class Settings
 {
-    public int FileCount { get; init; }
-    public string Prefix { get; init; }
-    public string Extension { get; init; }
-    public string OutputDirectory { get; init; }
-    public int? SizeInBytes { get; init; }
+    public int FileCount { get;}
+    public string Prefix { get; }
+    public string Extension { get; }
+    public string OutputDirectory { get; }
+    public int? SizeInBytes { get; }
 
     private static readonly List<string> SupportedFlags =
         new() { "-p", "-e", "-o", "-s" };
