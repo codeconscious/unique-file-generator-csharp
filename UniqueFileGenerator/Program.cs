@@ -22,19 +22,32 @@ public static class Program
         try
         {
             settings = new Settings(args);
-            SaveFiles(settings);
+
+            // TODO: Add a new command line flag. (Separate for filenames and content?)
+            var charService = new CharacterService();
+            var charBank = charService.GetCharacters(CharacterType.UpperCaseLetter |
+                                                     CharacterType.Numeric);
+
+            SaveFiles(settings, charBank);
         }
         catch (Exception ex)
         {
-                AnsiConsole.WriteException(ex, ExceptionFormats.ShortenTypes);
-                return;
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenTypes);
+            return;
         }
 
         WriteLine($"{settings.Count} files created.");
     }
 
-    private static void SaveFiles(Settings settings)
+    private static void SaveFiles(Settings settings, string charBank)
     {
+        if (string.IsNullOrWhiteSpace(charBank))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(charBank),
+                "No characters to use as a character bank were passed in.");
+        }
+
         Directory.CreateDirectory(settings.OutputDirectory);
 
         var random = new Random();
@@ -47,14 +60,14 @@ public static class Program
             _ => string.Empty
         };
 
-        var rndCharGenerator = new RandomCharacterGenerator();
+        var rndStringService = new RandomStringService(charBank);
 
         //var idQueue = new Queue<string>(settings.Count);
-        var baseFileNameQueue = rndCharGenerator.GetCharacterSet(settings.Count, 10, true);
+        var baseFileNameQueue = rndStringService.GetCharacterCollection(settings.Count, 10);
         var prefixedFileNameQueue = new Queue<string>(baseFileNameQueue.Select(n => settings.Prefix + postPrefixDivider + n));
 
         var contentQueue = settings.SizeInBytes.HasValue
-            ? new Queue<string>(rndCharGenerator.GetCharacterSet(settings.Count, settings.SizeInBytes.Value, true))
+            ? new Queue<string>(rndStringService.GetCharacterCollection(settings.Count, settings.SizeInBytes.Value))
             : new Queue<string>(prefixedFileNameQueue);
 
         while (prefixedFileNameQueue.Any())
