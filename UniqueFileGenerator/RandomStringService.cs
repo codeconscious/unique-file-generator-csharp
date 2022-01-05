@@ -24,7 +24,7 @@ public sealed class RandomStringService
     /// </summary>
     /// <param name="count">The number of strings.</param>
     /// <param name="lengthOfEach">The length of each string.</param>
-    public IEnumerable<string> GetCharacterCollection(int count, int lengthOfEach)
+    public IEnumerable<string> GetStrings(int count, int lengthOfEach)
     {
         if (count < 0)
         {

@@ -50,8 +50,6 @@ public static class Program
 
         Directory.CreateDirectory(settings.OutputDirectory);
 
-        var random = new Random();
-
         // Only add a post-prefix space for non-alphanumeric characters.
         var postPrefixDivider = settings.Prefix switch
         {
@@ -62,11 +60,12 @@ public static class Program
         var stringService = new RandomStringService(charBank);
 
         //var idQueue = new Queue<string>(settings.Count);
-        var baseFileNameQueue = stringService.GetCharacterCollection(settings.FileCount, 10);
-        var prefixedFileNameQueue = new Queue<string>(baseFileNameQueue.Select(n => settings.Prefix + postPrefixDivider + n));
+        var baseFileNames = stringService.GetStrings(settings.FileCount, 10);
+        var prefixedFileNameQueue = new Queue<string>(
+            baseFileNames.Select(n => settings.Prefix + postPrefixDivider + n));
 
         var contentQueue = settings.SizeInBytes.HasValue
-            ? new Queue<string>(stringService.GetCharacterCollection(settings.FileCount, settings.SizeInBytes.Value))
+            ? new Queue<string>(stringService.GetStrings(settings.FileCount, settings.SizeInBytes.Value))
             : new Queue<string>(prefixedFileNameQueue);
 
         while (prefixedFileNameQueue.Any())
