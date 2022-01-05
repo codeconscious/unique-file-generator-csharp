@@ -24,9 +24,9 @@ public static class Program
             settings = new Settings(args);
 
             // TODO: Add a new command line flag. (Separate for filenames and content?)
-            var charService = new CharacterService();
-            var charBank = charService.GetCharacters(CharacterType.UpperCaseLetter |
-                                                     CharacterType.Numeric);
+            var charProvider = new CharacterProviderService();
+            var charBank = charProvider.GetCharacters(CharacterType.UpperCaseLetter |
+                                                      CharacterType.Numeric);
 
             SaveFiles(settings, charBank);
         }
