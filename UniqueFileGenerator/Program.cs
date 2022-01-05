@@ -32,7 +32,7 @@ public static class Program
         }
         catch (Exception ex)
         {
-            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenTypes);
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
             return;
         }
 
