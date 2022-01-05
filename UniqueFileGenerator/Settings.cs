@@ -14,38 +14,39 @@ public class Settings
 
     public Settings(string[] args)
     {
-        var (fileCount, argPairs) = ParseArgs(args);
+        var (fileCount, argDict) = ParseArgs(args);
 
         FileCount = fileCount;
 
-        Prefix = argPairs.ContainsKey("-p")
-            ? argPairs["-p"]
+        Prefix = argDict.ContainsKey("-p")
+            ? argDict["-p"]
             : string.Empty;
 
-        Extension = argPairs.ContainsKey("-e")
-            ? "." + argPairs["-e"]
+        // TODO: Strip out initial periods, if present.
+        Extension = argDict.ContainsKey("-e")
+            ? "." + argDict["-e"]
             : string.Empty;
 
-        OutputDirectory = argPairs.ContainsKey("-o")
-            ? "." + Path.DirectorySeparatorChar + argPairs["-o"] + Path.DirectorySeparatorChar
+        OutputDirectory = argDict.ContainsKey("-o")
+            ? "." + Path.DirectorySeparatorChar + argDict["-o"] + Path.DirectorySeparatorChar
             : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
 
-        SizeInBytes = argPairs.ContainsKey("-s")
-            ? int.Parse(argPairs["-s"])
+        SizeInBytes = argDict.ContainsKey("-s")
+            ? int.Parse(argDict["-s"])
             : null;
     }
 
     private static (int Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
     {
         if (args.Length == 0)
-            throw new ArgumentException("The count must be specified", nameof(args));
+            throw new ArgumentException("The file count must be specified.", nameof(args));
 
         var argQueue = new Queue<string>(args);
 
         if (!int.TryParse(argQueue.Dequeue(), out var fileCount))
         {
             throw new InvalidOperationException(
-                "You must enter a count as the first argument.");
+                "You must enter a file count as the first argument.");
         }
 
         if (fileCount < 1)
