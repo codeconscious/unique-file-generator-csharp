@@ -57,6 +57,9 @@ public sealed class RandomStringService
     /// <param name="length">The desired string length.</param>
     private string GetRandomChars(int length)
     {
+        if (length < 0)
+            throw new ArgumentOutOfRangeException(nameof(length), "The length must be 1 or greater.");
+
         if (length == 0)
             return string.Empty;
 
