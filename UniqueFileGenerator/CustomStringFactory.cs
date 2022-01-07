@@ -1,25 +1,26 @@
 namespace UniqueFileGenerator;
 
-/// <summary>
-/// Sets up a collection of characters that can be chosen at random.
-/// </summary>
-public sealed class CharacterProviderService
+public sealed class CustomStringFactory
 {
     private readonly IReadOnlyDictionary<CharacterType, string> CharacterDictionary =
         new Dictionary<CharacterType, string>()
         {
             { CharacterType.UpperCaseLetter, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
             { CharacterType.LowerCaseLetter, "abcdefghijklmnopqrstuvwxyz" },
-            { CharacterType.Numeric,         "0123456789" }
+            { CharacterType.Number,          "0123456789" }
         };
 
-    public string GetCharacters(CharacterType charTypes)
+    /// <summary>
+    /// Returns a custom string based upon the requested character type(s).
+    /// </summary>
+    /// <param name="charTypes">One or more CharacterTypes.</param>
+    public string CreateCustomString(CharacterType charTypes)
     {
         ArgumentNullException.ThrowIfNull(nameof(charTypes));
 
         var sb = new System.Text.StringBuilder();
 
-        // Iterate through the character types, adding relevant text.
+        // Iterate through the character types, appending only relevant text.
         foreach (CharacterType type in Enum.GetValues(typeof(CharacterType)))
         {
             if (charTypes.HasFlag(type))

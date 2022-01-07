@@ -3,12 +3,12 @@ namespace UniqueFileGenerator;
 /// <summary>
 /// Creates and delivers collections of random strings.
 /// </summary>
-public sealed class RandomStringService
+public sealed class RandomStringFactory
 {
     private string CharacterBank { get; }
     private Random Random { get; } = new();
 
-    public RandomStringService(string characterBank)
+    public RandomStringFactory(string characterBank)
     {
         if (string.IsNullOrWhiteSpace(characterBank))
         {
@@ -20,11 +20,12 @@ public sealed class RandomStringService
     }
 
     /// <summary>
-    /// Gets a collections of strings, each containing random characters.
+    /// Creates a collection of strings, each containing random characters
+    /// from the character bank, according to the settings provided.
     /// </summary>
     /// <param name="count">The number of strings.</param>
     /// <param name="lengthOfEach">The length of each string.</param>
-    public IEnumerable<string> GetStrings(int count, int lengthOfEach)
+    public IEnumerable<string> CreateRandomStrings(int count, int lengthOfEach)
     {
         if (count < 0)
         {
@@ -45,20 +46,20 @@ public sealed class RandomStringService
 
         while (set.Count < count)
         {
-            set.Add(GetRandomChars(lengthOfEach));
+            set.Add(CreateSingleRandomString(lengthOfEach));
         }
 
         return set;
     }
 
     /// <summary>
-    /// Gets a string of random characters.
+    /// Creates a single string of random characters.
     /// </summary>
     /// <param name="length">The desired string length.</param>
-    private string GetRandomChars(int length)
+    private string CreateSingleRandomString(int length)
     {
         if (length < 0)
-            throw new ArgumentOutOfRangeException(nameof(length), "The length must be 1 or greater.");
+            throw new ArgumentOutOfRangeException(nameof(length), "The length cannot be negative.");
 
         if (length == 0)
             return string.Empty;

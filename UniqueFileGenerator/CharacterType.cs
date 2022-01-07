@@ -5,5 +5,5 @@ public enum CharacterType
 {
     UpperCaseLetter = 0,
     LowerCaseLetter = 1 << 0,
-    Numeric =         1 << 1
+    Number =         1 << 1
 }

@@ -8,10 +8,6 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-// #if DEBUG
-//             args = new[] { "20", "-p", "TEST-" };
-// #endif
-
         if (args.Length == 0)
         {
             PrintInstructions();
@@ -23,10 +19,10 @@ public static class Program
         {
             settings = new Settings(args);
 
-            // TODO: Add a new command line flag. (Separate for filenames and content?)
-            var charProvider = new CharacterProviderService();
-            var charBank = charProvider.GetCharacters(CharacterType.UpperCaseLetter |
-                                                      CharacterType.Numeric);
+            // TODO: Add a command line flag to specify character types. (Separate for filenames and content?)
+            var stringFactory = new CustomStringFactory();
+            var charBank = stringFactory.CreateCustomString(CharacterType.UpperCaseLetter |
+                                                            CharacterType.Number);
 
             SaveFiles(settings, charBank);
         }
@@ -57,15 +53,15 @@ public static class Program
             _ => string.Empty
         };
 
-        var stringService = new RandomStringService(charBank);
+        var stringFactory = new RandomStringFactory(charBank);
 
         //var idQueue = new Queue<string>(settings.Count);
-        var baseFileNames = stringService.GetStrings(settings.FileCount, 10);
+        var baseFileNames = stringFactory.CreateRandomStrings(settings.FileCount, 10);
         var prefixedFileNameQueue = new Queue<string>(
             baseFileNames.Select(n => settings.Prefix + postPrefixDivider + n));
 
         var contentQueue = settings.SizeInBytes.HasValue
-            ? new Queue<string>(stringService.GetStrings(settings.FileCount, settings.SizeInBytes.Value))
+            ? new Queue<string>(stringFactory.CreateRandomStrings(settings.FileCount, settings.SizeInBytes.Value))
             : new Queue<string>(prefixedFileNameQueue);
 
         while (prefixedFileNameQueue.Any())
@@ -92,8 +88,6 @@ public static class Program
             "   uniquefilegen 1000 -p TEST- e txt  [gray](Creates 1,000 files in the format \"TEST-12345.txt\")[/]";
         outerTable.AddRow(usage);
         outerTable.AddEmptyRow();
-        // outerTable.AddRow("Usage: uniquefilegen [count] [arguments]");
-        // outerTable.AddRow("Example: uniquefilegen 10 [arguments]");
 
         var argTable = new Table();
         argTable.Border(TableBorder.None);
