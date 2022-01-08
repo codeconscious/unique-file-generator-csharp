@@ -35,6 +35,14 @@ public sealed class RandomStringFactory
                 sb.Append(CharactersByCategory[type]);
         }
 
+        if (sb.Length == 0)
+            throw new ArgumentOutOfRangeException(
+                nameof(sb), "The character bank contains no characters.");
+
+        if (sb.Length == 1)
+            throw new ArgumentOutOfRangeException(
+                nameof(sb), "The character bank must contain at least 2 characters.");
+
         CharacterBank =  sb.ToString();
     }
 
