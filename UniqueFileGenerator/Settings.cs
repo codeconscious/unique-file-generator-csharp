@@ -24,7 +24,7 @@ public class Settings
             : string.Empty;
 
         Extension = argDict.ContainsKey("-e")
-            ? (argDict["-e"][0] == '.' ? "" : ".") + argDict["-e"]
+            ? EnforceOpeningPeriod(argDict["-e"])
             : string.Empty;
 
         OutputDirectory = argDict.ContainsKey("-o")
@@ -93,6 +93,9 @@ public class Settings
         return (fileCount, argDict);
     }
 
-    private bool IsLastCharAlphanumeric(string text) =>
+    private static bool IsLastCharAlphanumeric(string text) =>
         !string.IsNullOrEmpty(text) && char.IsLetterOrDigit(text[^1]);
+
+    private static string EnforceOpeningPeriod(string text) =>
+        (text[0] == '.' ? string.Empty : ".") + text;
 }
