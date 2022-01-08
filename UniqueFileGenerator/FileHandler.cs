@@ -13,7 +13,6 @@ public class FileHandler
         Settings = settings;
     }
 
-    // TODO: Refactor to return one file at a time.
     private IEnumerable<FileData> PrepareFileData()
     {
         // Only add a post-prefix space when the last character is not alphanumeric.
@@ -25,24 +24,27 @@ public class FileHandler
 
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
 
-        var baseFileNames = stringFactory.CreateUniqueRandomStrings(Settings.FileCount, 10);
-        var fileNames = baseFileNames.Select(n => Settings.Prefix + postPrefixDivider + n);
+        for (var i = 0; i < Settings.FileCount; i++)
+        {
+            // TODO: Create a single version.
+            var randomChars = stringFactory.CreateUniqueRandomStrings(1, 10).Single();
+            var fileName = Settings.Prefix + postPrefixDivider + randomChars;
 
-        var contents = Settings.SizeInBytes.HasValue
-            ? stringFactory.CreateUniqueRandomStrings(Settings.FileCount,
-                                                      Settings.SizeInBytes.Value)
-            : fileNames;
+            var contents = Settings.SizeInBytes.HasValue
+                ? stringFactory.CreateUniqueRandomStrings(Settings.FileCount,
+                                                          Settings.SizeInBytes.Value)
+                               .Single()
+                : fileName;
 
-        return fileNames.Zip(contents, (k, v) => new FileData(k, v));
+            yield return new FileData(fileName, contents);
+        }
     }
 
     public void SaveFiles()
     {
-        var fileData = PrepareFileData();
-
         Directory.CreateDirectory(Settings.OutputDirectory);
 
-        foreach (var file in fileData)
+        foreach (var file in PrepareFileData())
         {
             var path = Settings.OutputDirectory + file.Name + Settings.Extension;
             var content = new UTF8Encoding(true).GetBytes(file.Content);
