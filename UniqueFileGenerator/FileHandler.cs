@@ -26,14 +26,11 @@ public class FileHandler
 
         for (var i = 0; i < Settings.FileCount; i++)
         {
-            // TODO: Create a single version.
-            var randomChars = stringFactory.CreateUniqueRandomStrings(1, 10).Single();
+            var randomChars = stringFactory.CreateSingleUniqueString(10);
             var fileName = Settings.Prefix + postPrefixDivider + randomChars;
 
             var contents = Settings.SizeInBytes.HasValue
-                ? stringFactory.CreateUniqueRandomStrings(Settings.FileCount,
-                                                          Settings.SizeInBytes.Value)
-                               .Single()
+                ? stringFactory.CreateSingleUniqueString(Settings.SizeInBytes.Value)
                 : fileName;
 
             yield return new FileData(fileName, contents);

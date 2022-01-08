@@ -44,7 +44,7 @@ public sealed class RandomStringFactory
     /// </summary>
     /// <param name="count">The number of strings.</param>
     /// <param name="lengthOfEach">The length of each string.</param>
-    public IEnumerable<string> CreateUniqueRandomStrings(int count, int lengthOfEach)
+    public IEnumerable<string> CreateUniqueStrings(int count, int lengthOfEach)
     {
         if (count < 0)
         {
@@ -67,7 +67,7 @@ public sealed class RandomStringFactory
 
         while (set.Count < count)
         {
-            set.Add(CreateSingleRandomString(lengthOfEach));
+            set.Add(CreateSingleUniqueString(lengthOfEach));
         }
 
         return set;
@@ -77,7 +77,7 @@ public sealed class RandomStringFactory
     /// Creates a single string containing random characters from the character bank.
     /// </summary>
     /// <param name="length">The desired string length.</param>
-    private string CreateSingleRandomString(int length)
+    public string CreateSingleUniqueString(int length)
     {
         if (length < 0)
         {
