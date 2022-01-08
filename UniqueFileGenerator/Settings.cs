@@ -22,9 +22,8 @@ public class Settings
             ? argDict["-p"]
             : string.Empty;
 
-        // TODO: Strip out initial periods, if present.
         Extension = argDict.ContainsKey("-e")
-            ? "." + argDict["-e"]
+            ? (argDict["-e"][0] == '.' ? "" : ".") + argDict["-e"]
             : string.Empty;
 
         OutputDirectory = argDict.ContainsKey("-o")
