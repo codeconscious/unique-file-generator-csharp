@@ -1,5 +1,4 @@
 ﻿global using static System.Console;
-using System.Text;
 using Spectre.Console;
 
 namespace UniqueFileGenerator;
@@ -19,7 +18,9 @@ public static class Program
         {
             settings = new Settings(args);
 
-            SaveFiles(settings);
+            var fileHandler = new FileHandler(settings);
+
+            fileHandler.SaveFiles();
         }
         catch (Exception ex)
         {
@@ -28,42 +29,6 @@ public static class Program
         }
 
         WriteLine($"{settings.FileCount} files created.");
-    }
-
-    // TODO: Refactor to another class.
-    private static void SaveFiles(Settings settings)
-    {
-        ArgumentNullException.ThrowIfNull(settings);
-
-        // Only add a post-prefix space for non-alphanumeric characters.
-        var postPrefixDivider = settings.Prefix switch
-        {
-            { Length: > 0 } when char.IsLetterOrDigit(settings.Prefix[^1]) => " ",
-            _ => string.Empty
-        };
-
-        var stringFactory = new RandomStringFactory(settings.CharacterTypes);
-
-        //var idQueue = new Queue<string>(settings.Count);
-        var baseFileNames = stringFactory.CreateRandomStrings(settings.FileCount, 10);
-        var prefixedFileNameQueue = new Queue<string>(
-            baseFileNames.Select(n => settings.Prefix + postPrefixDivider + n));
-
-        var contentQueue = settings.SizeInBytes.HasValue
-            ? new Queue<string>(stringFactory.CreateRandomStrings(settings.FileCount, settings.SizeInBytes.Value))
-            : new Queue<string>(prefixedFileNameQueue);
-
-        Directory.CreateDirectory(settings.OutputDirectory);
-
-        while (prefixedFileNameQueue.Any())
-        {
-            var fileName = prefixedFileNameQueue.Dequeue();
-            var path = settings.OutputDirectory + fileName + settings.Extension;
-            var content = new UTF8Encoding(true).GetBytes(contentQueue.Dequeue());
-
-            using var fileStream = File.Create(path);
-            fileStream.Write(content, 0, content.Length);
-        }
     }
 
     private static void PrintInstructions()
