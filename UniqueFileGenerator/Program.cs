@@ -19,12 +19,7 @@ public static class Program
         {
             settings = new Settings(args);
 
-            // TODO: Add a command line flag to specify character types. (Separate for filenames and content?)
-            var stringFactory = new CustomStringFactory();
-            var charBank = stringFactory.CreateCustomString(CharacterType.UpperCaseLetter |
-                                                            CharacterType.Number);
-
-            SaveFiles(settings, charBank);
+            SaveFiles(settings);
         }
         catch (Exception ex)
         {
@@ -35,16 +30,10 @@ public static class Program
         WriteLine($"{settings.FileCount} files created.");
     }
 
-    private static void SaveFiles(Settings settings, string charBank)
+    // TODO: Refactor to another class.
+    private static void SaveFiles(Settings settings)
     {
-        if (string.IsNullOrWhiteSpace(charBank))
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(charBank),
-                "No characters to use as a character bank were passed in.");
-        }
-
-        Directory.CreateDirectory(settings.OutputDirectory);
+        ArgumentNullException.ThrowIfNull(settings);
 
         // Only add a post-prefix space for non-alphanumeric characters.
         var postPrefixDivider = settings.Prefix switch
@@ -53,7 +42,7 @@ public static class Program
             _ => string.Empty
         };
 
-        var stringFactory = new RandomStringFactory(charBank);
+        var stringFactory = new RandomStringFactory(settings.CharacterTypes);
 
         //var idQueue = new Queue<string>(settings.Count);
         var baseFileNames = stringFactory.CreateRandomStrings(settings.FileCount, 10);
@@ -63,6 +52,8 @@ public static class Program
         var contentQueue = settings.SizeInBytes.HasValue
             ? new Queue<string>(stringFactory.CreateRandomStrings(settings.FileCount, settings.SizeInBytes.Value))
             : new Queue<string>(prefixedFileNameQueue);
+
+        Directory.CreateDirectory(settings.OutputDirectory);
 
         while (prefixedFileNameQueue.Any())
         {

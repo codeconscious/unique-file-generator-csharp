@@ -7,10 +7,10 @@ public class Settings
     public string Extension { get; }
     public string OutputDirectory { get; }
     public int? SizeInBytes { get; }
+    public CharacterType CharacterTypes { get; }
 
     private static readonly IReadOnlyList<string> SupportedFlags =
-        new List<string>()
-            { "-p", "-e", "-o", "-s" };
+        new List<string>() { "-p", "-e", "-o", "-s" };
 
     public Settings(string[] args)
     {
@@ -34,6 +34,10 @@ public class Settings
         SizeInBytes = argDict.ContainsKey("-s")
             ? int.Parse(argDict["-s"])
             : null;
+
+        // TODO: Add a command line flag to specify character types. (Separate for filenames and content?)
+        CharacterTypes = CharacterType.UpperCaseLetter |
+                         CharacterType.Number;
     }
 
     private static (int Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
@@ -85,11 +89,6 @@ public class Settings
                     argDict.Add(currentFlag, thisArg);
             }
         }
-
-        // For testing only:
-        // WriteLine("Count: " + count);
-        // foreach (var arg in argDict)
-        //     WriteLine($"{arg.Key}: {arg.Value}");
 
         return (fileCount, argDict);
     }

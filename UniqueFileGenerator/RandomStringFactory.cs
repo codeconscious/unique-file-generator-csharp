@@ -1,22 +1,43 @@
 namespace UniqueFileGenerator;
 
-/// <summary>
-/// Creates and delivers collections of random strings.
-/// </summary>
 public sealed class RandomStringFactory
 {
+    private readonly IReadOnlyDictionary<CharacterType, string> CharactersByCategory =
+        new Dictionary<CharacterType, string>()
+        {
+            { CharacterType.UpperCaseLetter, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+            { CharacterType.LowerCaseLetter, "abcdefghijklmnopqrstuvwxyz" },
+            { CharacterType.Number,          "0123456789" }
+        };
+
+    /// <summary>
+    /// All characters that can be randomly selected by this class's methods.
+    /// </summary>
     private string CharacterBank { get; }
     private Random Random { get; } = new();
 
-    public RandomStringFactory(string characterBank)
+    public RandomStringFactory(CharacterType charTypes)
     {
-        if (string.IsNullOrWhiteSpace(characterBank))
+        CharacterBank = CreateStringFromCharTypes(charTypes);
+    }
+
+    /// <summary>
+    /// Returns a custom string based upon the requested character type(s).
+    /// </summary>
+    private string CreateStringFromCharTypes(CharacterType charTypes)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(charTypes));
+
+        var sb = new System.Text.StringBuilder();
+
+        // Iterate through the character types, appending only relevant text.
+        foreach (CharacterType type in Enum.GetValues(typeof(CharacterType)))
         {
-            throw new ArgumentOutOfRangeException(
-                nameof(characterBank), "The character bank cannot be empty.");
+            if (charTypes.HasFlag(type))
+                sb.Append(CharactersByCategory[type]);
         }
 
-        CharacterBank = characterBank;
+        return sb.ToString();
     }
 
     /// <summary>
@@ -30,13 +51,15 @@ public sealed class RandomStringFactory
         if (count < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(count), "The count of desired strings must be greater than zero.");
+                nameof(count),
+                "The count of desired strings must be greater than zero.");
         }
 
         if (lengthOfEach < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(lengthOfEach), "The length of each string must be greater than zero.");
+                nameof(lengthOfEach),
+                "The length of each string must be greater than zero.");
         }
 
         if (count == 0)
@@ -59,14 +82,17 @@ public sealed class RandomStringFactory
     private string CreateSingleRandomString(int length)
     {
         if (length < 0)
-            throw new ArgumentOutOfRangeException(nameof(length), "The length cannot be negative.");
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(length), "The length cannot be negative.");
+        }
 
         if (length == 0)
             return string.Empty;
 
         var outputChars = new char[length];
 
-        for (int i = 0; i < outputChars.Length; i++)
+        for (var i = 0; i < outputChars.Length; i++)
         {
             outputChars[i] = CharacterBank[Random.Next(CharacterBank.Length)];
         }
