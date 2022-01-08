@@ -18,8 +18,9 @@ public class Settings
 
         FileCount = fileCount;
 
+        // Only add a post-prefix space when the last character is not alphanumeric.
         Prefix = argDict.ContainsKey("-p")
-            ? argDict["-p"]
+            ? argDict["-p"] +(IsLastCharAlphanumeric(argDict["-p"]) ? " " : string.Empty)
             : string.Empty;
 
         Extension = argDict.ContainsKey("-e")
@@ -91,4 +92,7 @@ public class Settings
 
         return (fileCount, argDict);
     }
+
+    private bool IsLastCharAlphanumeric(string text) =>
+        !string.IsNullOrEmpty(text) && char.IsLetterOrDigit(text[^1]);
 }

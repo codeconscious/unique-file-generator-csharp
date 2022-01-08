@@ -15,19 +15,12 @@ public class FileHandler
 
     private IEnumerable<FileData> PrepareFileData()
     {
-        // Only add a post-prefix space when the last character is not alphanumeric.
-        var postPrefixDivider = Settings.Prefix switch
-        {
-            { Length: > 0 } when char.IsLetterOrDigit(Settings.Prefix[^1]) => " ",
-            _ => string.Empty
-        };
-
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
 
         for (var i = 0; i < Settings.FileCount; i++)
         {
             var randomChars = stringFactory.CreateSingleUniqueString(10);
-            var fileName = Settings.Prefix + postPrefixDivider + randomChars;
+            var fileName = Settings.Prefix + randomChars;
 
             var contents = Settings.SizeInBytes.HasValue
                 ? stringFactory.CreateSingleUniqueString(Settings.SizeInBytes.Value)
