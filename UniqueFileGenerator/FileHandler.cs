@@ -13,7 +13,8 @@ public class FileHandler
         Settings = settings;
     }
 
-    public void SaveFiles()
+    // TODO: Refactor to return one file at a time.
+    private IEnumerable<FileData> PrepareFileData()
     {
         // Only add a post-prefix space when the last character is not alphanumeric.
         var postPrefixDivider = Settings.Prefix switch
@@ -24,25 +25,48 @@ public class FileHandler
 
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
 
-        var baseFileNames = stringFactory.CreateRandomStrings(Settings.FileCount, 10);
-        var prefixedFileNames = new Queue<string>(
-            baseFileNames.Select(n => Settings.Prefix + postPrefixDivider + n));
+        var baseFileNames = stringFactory.CreateUniqueRandomStrings(Settings.FileCount, 10);
+        var fileNames = baseFileNames.Select(n => Settings.Prefix + postPrefixDivider + n);
 
-        var contentQueue = Settings.SizeInBytes.HasValue
-            ? new Queue<string>(stringFactory.CreateRandomStrings(Settings.FileCount, Settings.SizeInBytes.Value))
-            : new Queue<string>(prefixedFileNames);
+        var contents = Settings.SizeInBytes.HasValue
+            ? stringFactory.CreateUniqueRandomStrings(Settings.FileCount,
+                                                      Settings.SizeInBytes.Value)
+            : fileNames;
+
+        return fileNames.Zip(contents, (k, v) => new FileData(k, v));
+    }
+
+    public void SaveFiles()
+    {
+        var fileData = PrepareFileData();
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
-        // Save each file.
-        while (prefixedFileNames.Any())
+        foreach (var file in fileData)
         {
-            var fileName = prefixedFileNames.Dequeue();
-            var path = Settings.OutputDirectory + fileName + Settings.Extension;
-            var content = new UTF8Encoding(true).GetBytes(contentQueue.Dequeue());
+            var path = Settings.OutputDirectory + file.Name + Settings.Extension;
+            var content = new UTF8Encoding(true).GetBytes(file.Content);
 
             using var fileStream = File.Create(path);
             fileStream.Write(content, 0, content.Length);
+        }
+    }
+
+    private class FileData
+    {
+        public string Name { get; }
+        public string Content { get; }
+
+        public FileData(string name, string content)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("A proper filename must be specified.", nameof(name));
+
+            if (string.IsNullOrWhiteSpace(content))
+                throw new ArgumentException("File content must be specified.", nameof(content));
+
+            Name = name;
+            Content = content;
         }
     }
 }

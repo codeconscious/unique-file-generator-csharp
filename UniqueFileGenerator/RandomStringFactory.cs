@@ -44,7 +44,7 @@ public sealed class RandomStringFactory
     /// </summary>
     /// <param name="count">The number of strings.</param>
     /// <param name="lengthOfEach">The length of each string.</param>
-    public IEnumerable<string> CreateRandomStrings(int count, int lengthOfEach)
+    public IEnumerable<string> CreateUniqueRandomStrings(int count, int lengthOfEach)
     {
         if (count < 0)
         {
