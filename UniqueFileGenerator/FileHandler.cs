@@ -15,7 +15,7 @@ public class FileHandler
 
     public void SaveFiles()
     {
-        // Only add a post-prefix space for non-alphanumeric characters.
+        // Only add a post-prefix space when the last character is not alphanumeric.
         var postPrefixDivider = Settings.Prefix switch
         {
             { Length: > 0 } when char.IsLetterOrDigit(Settings.Prefix[^1]) => " ",
@@ -24,20 +24,20 @@ public class FileHandler
 
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
 
-        //var idQueue = new Queue<string>(settings.Count);
         var baseFileNames = stringFactory.CreateRandomStrings(Settings.FileCount, 10);
-        var prefixedFileNameQueue = new Queue<string>(
+        var prefixedFileNames = new Queue<string>(
             baseFileNames.Select(n => Settings.Prefix + postPrefixDivider + n));
 
         var contentQueue = Settings.SizeInBytes.HasValue
             ? new Queue<string>(stringFactory.CreateRandomStrings(Settings.FileCount, Settings.SizeInBytes.Value))
-            : new Queue<string>(prefixedFileNameQueue);
+            : new Queue<string>(prefixedFileNames);
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
-        while (prefixedFileNameQueue.Any())
+        // Save each file.
+        while (prefixedFileNames.Any())
         {
-            var fileName = prefixedFileNameQueue.Dequeue();
+            var fileName = prefixedFileNames.Dequeue();
             var path = Settings.OutputDirectory + fileName + Settings.Extension;
             var content = new UTF8Encoding(true).GetBytes(contentQueue.Dequeue());
 
