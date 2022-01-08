@@ -1,5 +1,8 @@
 namespace UniqueFileGenerator;
 
+/// <summary>
+/// Handles all operations for generating random strings.
+/// </summary>
 public sealed class RandomStringFactory
 {
     private readonly IReadOnlyDictionary<CharacterType, string> CharactersByCategory =
@@ -16,15 +19,10 @@ public sealed class RandomStringFactory
     private string CharacterBank { get; }
     private Random Random { get; } = new();
 
-    public RandomStringFactory(CharacterType charTypes)
-    {
-        CharacterBank = CreateStringFromCharTypes(charTypes);
-    }
-
     /// <summary>
-    /// Returns a custom string based upon the requested character type(s).
+    /// Constructor that also populates the character bank.
     /// </summary>
-    private string CreateStringFromCharTypes(CharacterType charTypes)
+    public RandomStringFactory(CharacterType charTypes)
     {
         ArgumentNullException.ThrowIfNull(nameof(charTypes));
 
@@ -37,7 +35,7 @@ public sealed class RandomStringFactory
                 sb.Append(CharactersByCategory[type]);
         }
 
-        return sb.ToString();
+        CharacterBank =  sb.ToString();
     }
 
     /// <summary>
@@ -76,7 +74,7 @@ public sealed class RandomStringFactory
     }
 
     /// <summary>
-    /// Creates a single string of random characters.
+    /// Creates a single string containing random characters from the character bank.
     /// </summary>
     /// <param name="length">The desired string length.</param>
     private string CreateSingleRandomString(int length)
