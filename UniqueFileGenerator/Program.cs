@@ -24,7 +24,7 @@ public static class Program
         }
         catch (Exception ex)
         {
-            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
+            AnsiConsole.WriteException(ex, ExceptionFormats.Default);
             return;
         }
 
