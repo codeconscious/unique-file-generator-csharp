@@ -2,7 +2,7 @@ namespace UniqueFileGenerator;
 
 public class Settings
 {
-    public nuint FileCount { get;}
+    public uint FileCount { get;}
     public string Prefix { get; }
     public string Extension { get; }
     public string OutputDirectory { get; }
@@ -40,14 +40,14 @@ public class Settings
                          CharacterType.Number;
     }
 
-    private static (nuint Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
+    private static (uint Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
     {
         if (args.Length == 0)
             throw new ArgumentException("The file count must be specified.", nameof(args));
 
         var argQueue = new Queue<string>(args);
 
-        if (!nuint.TryParse(argQueue.Dequeue(), out var fileCount))
+        if (!uint.TryParse(argQueue.Dequeue(), out var fileCount))
         {
             throw new InvalidOperationException(
                 "You must enter a file count of at least 1 as the first argument.");
