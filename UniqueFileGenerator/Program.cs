@@ -18,6 +18,13 @@ public static class Program
         {
             settings = new Settings(args);
 
+            // If the user requested a high number of files, confirm the operation.
+            if (settings.IsHighFileCount && !AnsiConsole.Confirm(ResourceStrings.Warning))
+            {
+                AnsiConsole.WriteLine(ResourceStrings.Cancelled);
+                return;
+            }
+
             var fileHandler = new FileHandler(settings);
 
             fileHandler.SaveFiles();
@@ -60,4 +67,12 @@ public static class Program
 
         AnsiConsole.Write(outerTable);
     }
+
+    private static class ResourceStrings
+    {
+        public const string Warning = "You've requested the creation of many files. Do you want to continue?";
+        public const string Cancelled = "Operation cancelled.";
+    }
+
+
 }

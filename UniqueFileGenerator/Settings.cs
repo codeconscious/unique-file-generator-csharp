@@ -9,6 +9,8 @@ public class Settings
     public int? SizeInBytes { get; }
     public CharacterType CharacterTypes { get; }
 
+    public bool IsHighFileCount => FileCount > 50_000;
+
     private static readonly IReadOnlyList<string> SupportedFlags =
         new List<string>() { "-p", "-e", "-o", "-s" };
 
