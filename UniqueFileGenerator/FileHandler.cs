@@ -32,7 +32,7 @@ public class FileHandler
 
     public void SaveFiles()
     {
-        EnsureSufficientDiskSpace();
+        EnsureSufficientDriveSpace();
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
@@ -46,14 +46,17 @@ public class FileHandler
         }
     }
 
-    private void EnsureSufficientDiskSpace()
+    private void EnsureSufficientDriveSpace()
     {
+        // Don't allow the drive space to drop before this amount of bytes.
+        const long driveSpaceToKeepAvailable = 1_000_000_000; // Roughly 1GB
+
         var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         var rootPath = Path.GetPathRoot(appPath);
         var driveInfo = new DriveInfo(rootPath);
-        var freeSpace = driveInfo.AvailableFreeSpace;
+        var availableFreeSpace = driveInfo.AvailableFreeSpace - driveSpaceToKeepAvailable;
 
-        if (freeSpace < Settings.DiskSpaceNecessary)
+        if (availableFreeSpace < Settings.DiskSpaceNecessary)
             throw new InvalidOperationException(ResourceStrings.InsufficientDriveSpace);
     }
 
