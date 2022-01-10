@@ -33,9 +33,24 @@ public class Settings
             ? "." + Path.DirectorySeparatorChar + argDict["-o"] + Path.DirectorySeparatorChar
             : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
 
-        SizeInBytes = argDict.ContainsKey("-s")
-            ? int.Parse(argDict["-s"])
-            : null;
+        // TODO: Accept sizes in formats like "30KB" or "10.4MB"
+        if (argDict.ContainsKey("-s"))
+        {
+            if (int.TryParse(argDict["-s"], out var parsedSize))
+            {
+                SizeInBytes = parsedSize switch
+                {
+                    0 => throw new ArgumentOutOfRangeException(
+                            nameof(parsedSize), "File size cannot be 0."),
+                    _ => parsedSize
+                };
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(parsedSize), "The file size must be a positive number greater than 0.");
+            }
+        }
 
         // TODO: Add a command line flag to specify character types. (Separate for filenames and content?)
         CharacterTypes = CharacterType.UpperCaseLetter |
