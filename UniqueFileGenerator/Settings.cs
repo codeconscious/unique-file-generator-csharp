@@ -1,5 +1,3 @@
-using Spectre.Console;
-
 namespace UniqueFileGenerator;
 
 public class Settings
