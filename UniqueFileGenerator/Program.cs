@@ -1,5 +1,4 @@
-﻿global using static System.Console;
-using Spectre.Console;
+﻿global using Spectre.Console;
 
 namespace UniqueFileGenerator;
 
@@ -20,7 +19,7 @@ public static class Program
 
             if (!settings.ShouldProceedDespiteHighValues())
             {
-                AnsiConsole.WriteLine(ResourceStrings.Cancelled);
+                AnsiConsole.WriteLine(ResourceStrings.CancelledByUser);
                 return;
             }
 
@@ -30,12 +29,12 @@ public static class Program
         }
         catch (Exception ex)
         {
-            AnsiConsole.MarkupLine("[red]The operation was aborted because an error occurred.[/]");
-            AnsiConsole.WriteException(ex, ExceptionFormats.Default);
+            AnsiConsole.MarkupLine(ResourceStrings.CancelledDueToError);
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
             return;
         }
 
-        WriteLine($"{settings.FileCount} files created.");
+        AnsiConsole.MarkupLine(ResourceStrings.Completed(settings.FileCount));
     }
 
     private static void PrintInstructions()
