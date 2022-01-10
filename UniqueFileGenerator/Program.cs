@@ -31,6 +31,7 @@ public static class Program
         }
         catch (Exception ex)
         {
+            AnsiConsole.MarkupLine("[red]The operation was aborted because an error occurred.[/]");
             AnsiConsole.WriteException(ex, ExceptionFormats.Default);
             return;
         }
