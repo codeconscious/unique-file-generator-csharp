@@ -1,5 +1,5 @@
 # Unique File Generator
-This command line tool allows you to easily create an arbitrary number of unique (by name and content) files on your computer. Each filename contains a random collection of characters to differentiate them. You can supply optional parameters to customize files according to your needs.
+This command line tool allows you to easily create an arbitrary number of unique (by name and content) files on your computer. Each filename contains a random collection of characters to differentiate them. You can supply optional parameters to customize files according to your needs. Before running, the tool will ensure there is sufficient drive space available for the operation. This tool uses .NET 6.
 
 ## Usage
 At the minimum, you must specify the number of files you want to generate. This should be an sequence of numbers with no symbols or spaces.
