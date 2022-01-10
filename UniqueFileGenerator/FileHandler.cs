@@ -52,7 +52,8 @@ public class FileHandler
         const long driveSpaceToKeepAvailable = 1_000_000_000; // Roughly 1GB
 
         var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        var rootPath = Path.GetPathRoot(appPath);
+        var rootPath = Path.GetPathRoot(appPath)
+                       ?? throw new InvalidOperationException(ResourceStrings.CouldNotReadPathRoot);
         var driveInfo = new DriveInfo(rootPath);
         var availableFreeSpace = driveInfo.AvailableFreeSpace - driveSpaceToKeepAvailable;
 

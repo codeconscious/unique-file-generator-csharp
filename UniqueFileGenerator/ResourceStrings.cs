@@ -14,6 +14,7 @@ public static class ResourceStrings
 
         public const string InvalidFileName = "A valid filename was not specified.";
         public const string InvalidFileContent = "File content must be specified.";
+        public const string CouldNotReadPathRoot = "This drive's path root could not be determined.";
 
         public const string InvalidFileSizeZero = "File size cannot be 0.";
         public const string InvalidFileSizeOutOfRange = "The file size must be a positive number greater than 0.";
