@@ -11,6 +11,7 @@ public class Settings
     public int? SizeInBytes { get; }
     public CharacterType CharacterTypes { get; }
 
+    public long DiskSpaceNecessary => FileCount * (SizeInBytes ?? (Prefix.Length + 10));
     public bool IsHighFileCount => FileCount > 50_000;
     public bool IsLargeSize => SizeInBytes > 100_000_000;
 

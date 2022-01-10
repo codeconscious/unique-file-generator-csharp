@@ -13,7 +13,7 @@ public class FileHandler
         Settings = settings;
     }
 
-    private IEnumerable<FileData> PrepareFileData()
+    private IEnumerable<FileData> GetFileData()
     {
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
 
@@ -32,9 +32,11 @@ public class FileHandler
 
     public void SaveFiles()
     {
+        EnsureSufficientDiskSpace();
+
         Directory.CreateDirectory(Settings.OutputDirectory);
 
-        foreach (var file in PrepareFileData())
+        foreach (var file in GetFileData())
         {
             var path = Settings.OutputDirectory + file.Name + Settings.Extension;
             var content = new UTF8Encoding(true).GetBytes(file.Content);
@@ -42,6 +44,17 @@ public class FileHandler
             using var fileStream = File.Create(path);
             fileStream.Write(content, 0, content.Length);
         }
+    }
+
+    private void EnsureSufficientDiskSpace()
+    {
+        var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        var rootPath = Path.GetPathRoot(appPath);
+        var driveInfo = new DriveInfo(rootPath);
+        var freeSpace = driveInfo.AvailableFreeSpace;
+
+        if (freeSpace < Settings.DiskSpaceNecessary)
+            throw new InvalidOperationException(ResourceStrings.InsufficientDriveSpace);
     }
 
     private class FileData
