@@ -65,10 +65,10 @@ public class FileHandler
         public FileData(string name, string content)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("A proper filename must be specified.", nameof(name));
+                throw new ArgumentException(ResourceStrings.InvalidFileName, nameof(name));
 
             if (string.IsNullOrWhiteSpace(content))
-                throw new ArgumentException("File content must be specified.", nameof(content));
+                throw new ArgumentException(ResourceStrings.InvalidFileContent, nameof(content));
 
             Name = name;
             Content = content;

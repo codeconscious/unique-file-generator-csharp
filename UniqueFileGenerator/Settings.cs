@@ -45,14 +45,14 @@ public class Settings
                 SizeInBytes = parsedSize switch
                 {
                     0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedSize), "File size cannot be 0."),
+                            nameof(parsedSize), ResourceStrings.InvalidFileSizeZero),
                     _ => parsedSize
                 };
             }
-            else
+            else // A non-numeric value was passed in.
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(parsedSize), "The file size must be a positive number greater than 0.");
+                    nameof(parsedSize), ResourceStrings.InvalidFileSizeOutOfRange);
             }
         }
 
@@ -64,21 +64,15 @@ public class Settings
     private static (uint Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
     {
         if (args.Length == 0)
-            throw new ArgumentException("The file count must be specified.", nameof(args));
+            throw new ArgumentException(ResourceStrings.FileCountMissing, nameof(args));
 
         var argQueue = new Queue<string>(args);
 
         if (!uint.TryParse(argQueue.Dequeue(), out var fileCount))
-        {
-            throw new InvalidOperationException(
-                "You must enter a file count of at least 1 as the first argument.");
-        }
+            throw new InvalidOperationException(ResourceStrings.InvalidFileCount);
 
         if (fileCount == 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(fileCount), "An invalid file count was supplied.");
-        }
+            throw new ArgumentOutOfRangeException(nameof(fileCount), ResourceStrings.InvalidFileCountZero);
 
         var argDict = new Dictionary<string, string>();
 
@@ -92,17 +86,14 @@ public class Settings
             if (SupportedFlags.Contains(thisArg))
             {
                 if (argDict.ContainsKey(thisArg))
-                    throw new InvalidOperationException("A flag can only be specified once.");
+                    throw new InvalidOperationException(ResourceStrings.CanOnlyUseFlagOnce);
                 else
                     currentFlag = thisArg;
             }
             else // Not a flag, so treat as a flag value.
             {
                 if (string.IsNullOrWhiteSpace(currentFlag))
-                {
-                    throw new InvalidOperationException(
-                        $"A flag was not specified for {thisArg}.");
-                }
+                    throw new InvalidOperationException(ResourceStrings.ValueWithNoFlag + thisArg);
 
                 if (argDict.ContainsKey(currentFlag))
                     argDict[currentFlag] += " " + thisArg;

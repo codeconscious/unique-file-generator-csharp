@@ -61,15 +61,13 @@ public sealed class RandomStringFactory
         if (count < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(count),
-                "The count of desired strings must be greater than zero.");
+                nameof(count), ResourceStrings.StringCountZero);
         }
 
         if (lengthOfEach < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(lengthOfEach),
-                "The length of each string must be greater than zero.");
+                nameof(lengthOfEach), ResourceStrings.StringLengthZero);
         }
 
         if (count == 0)
