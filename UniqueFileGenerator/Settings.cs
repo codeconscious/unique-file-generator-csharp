@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace UniqueFileGenerator;
 
 public class Settings
@@ -10,6 +12,7 @@ public class Settings
     public CharacterType CharacterTypes { get; }
 
     public bool IsHighFileCount => FileCount > 50_000;
+    public bool IsLargeSize => SizeInBytes > 100_000_000;
 
     private static readonly IReadOnlyList<string> SupportedFlags =
         new List<string>() { "-p", "-e", "-o", "-s" };
@@ -26,7 +29,7 @@ public class Settings
             : string.Empty;
 
         Extension = argDict.ContainsKey("-e")
-            ? EnforceOpeningPeriod(argDict["-e"])
+            ? EnforceStartingPeriod(argDict["-e"])
             : string.Empty;
 
         OutputDirectory = argDict.ContainsKey("-o")
@@ -110,9 +113,22 @@ public class Settings
         return (fileCount, argDict);
     }
 
+    public bool ShouldProceedDespiteHighValues()
+    {
+        // If the user requested a high number of files, confirm the operation.
+        if (IsHighFileCount && !AnsiConsole.Confirm(ResourceStrings.CountWarning))
+            return false;
+
+        // If the user requested a very large file sizes, confirm the operation.
+        if (IsLargeSize && !AnsiConsole.Confirm(ResourceStrings.SizeWarning))
+            return false;
+
+        return true;
+    }
+
     private static bool IsLastCharAlphanumeric(string text) =>
         !string.IsNullOrEmpty(text) && char.IsLetterOrDigit(text[^1]);
 
-    private static string EnforceOpeningPeriod(string text) =>
+    private static string EnforceStartingPeriod(string text) =>
         (text[0] == '.' ? string.Empty : ".") + text;
 }
