@@ -70,7 +70,8 @@ public class Settings
             throw new InvalidOperationException(ResourceStrings.FileCountInvalidRange);
 
         if (fileCount == 0)
-            throw new ArgumentOutOfRangeException(nameof(fileCount), ResourceStrings.FileCountInvalidZero);
+            throw new ArgumentOutOfRangeException(
+                nameof(fileCount), ResourceStrings.FileCountInvalidZero);
 
         var argDict = new Dictionary<string, string>();
 
@@ -84,9 +85,9 @@ public class Settings
             if (SupportedFlags.Contains(thisArg))
             {
                 if (argDict.ContainsKey(thisArg))
-                    throw new InvalidOperationException(ResourceStrings.CanOnlyUseFlagOnce);
-                else
-                    currentFlag = thisArg;
+                    throw new InvalidOperationException(ResourceStrings.FlagCanBeUsedOnce);
+
+                currentFlag = thisArg;
             }
             else // Not a flag, so treat as a flag value.
             {

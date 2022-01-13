@@ -22,7 +22,7 @@ public static class ResourceStrings
         public const string FileCountInvalidRange = "You must enter a file count of at least 1 as the first argument.";
         public const string FileCountInvalidZero = "The file count cannot be zero.";
         public const string ValueWithNoFlag_Prefix = "A flag was not specified for ";
-        public const string CanOnlyUseFlagOnce = "A flag can only be specified once.";
+        public const string FlagCanBeUsedOnce = "A flag can only be specified once.";
 
         public const string CharBankEmpty = "The character bank is empty. It must contain at least 2 characters.";
         public const string CharBankTooShort = "The character bank must contain at least 2 characters.";
