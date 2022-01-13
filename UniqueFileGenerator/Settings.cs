@@ -43,14 +43,14 @@ public class Settings
                 SizeInBytes = parsedSize switch
                 {
                     0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedSize), ResourceStrings.InvalidFileSizeZero),
+                            nameof(parsedSize), ResourceStrings.FileSizeInvalidZero),
                     _ => parsedSize
                 };
             }
             else // A non-numeric value was passed in.
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(parsedSize), ResourceStrings.InvalidFileSizeOutOfRange);
+                    nameof(parsedSize), ResourceStrings.FileSizeInvalidRange);
             }
         }
 
@@ -67,10 +67,10 @@ public class Settings
         var argQueue = new Queue<string>(args);
 
         if (!uint.TryParse(argQueue.Dequeue(), out var fileCount))
-            throw new InvalidOperationException(ResourceStrings.InvalidFileCount);
+            throw new InvalidOperationException(ResourceStrings.FileCountInvalidRange);
 
         if (fileCount == 0)
-            throw new ArgumentOutOfRangeException(nameof(fileCount), ResourceStrings.InvalidFileCountZero);
+            throw new ArgumentOutOfRangeException(nameof(fileCount), ResourceStrings.FileCountInvalidZero);
 
         var argDict = new Dictionary<string, string>();
 
@@ -91,7 +91,8 @@ public class Settings
             else // Not a flag, so treat as a flag value.
             {
                 if (string.IsNullOrWhiteSpace(currentFlag))
-                    throw new InvalidOperationException(ResourceStrings.ValueWithNoFlag + thisArg);
+                    throw new InvalidOperationException(
+                        ResourceStrings.ValueWithNoFlag_Prefix + thisArg);
 
                 if (argDict.ContainsKey(currentFlag))
                     argDict[currentFlag] += " " + thisArg;

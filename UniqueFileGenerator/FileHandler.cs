@@ -53,7 +53,7 @@ public class FileHandler
 
         var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         var rootPath = Path.GetPathRoot(appPath)
-                       ?? throw new InvalidOperationException(ResourceStrings.CouldNotReadPathRoot);
+                       ?? throw new InvalidOperationException(ResourceStrings.PathRootParseError);
         var driveInfo = new DriveInfo(rootPath);
         var availableFreeSpace = driveInfo.AvailableFreeSpace - driveSpaceToKeepAvailable;
 
@@ -69,10 +69,10 @@ public class FileHandler
         public FileData(string name, string content)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException(ResourceStrings.InvalidFileName, nameof(name));
+                throw new ArgumentException(ResourceStrings.FileNameInvalid, nameof(name));
 
             if (string.IsNullOrWhiteSpace(content))
-                throw new ArgumentException(ResourceStrings.InvalidFileContent, nameof(content));
+                throw new ArgumentException(ResourceStrings.FileContentInvalid, nameof(content));
 
             Name = name;
             Content = content;

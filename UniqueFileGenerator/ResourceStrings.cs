@@ -10,18 +10,18 @@ public static class ResourceStrings
             $"[green]{count} {(count == 1 ? "file" : "files" )} created.[/]";
 
         public const string InsufficientDriveSpace = "There is not enough free space on this disk to continue.";
-        public const string ErrorReadingDriveInfo = "An unknown error occurred when reading the drive information.";
+        public const string DriveInfoReadError = "An unknown error occurred when reading the drive information.";
 
-        public const string InvalidFileName = "A valid filename was not specified.";
-        public const string InvalidFileContent = "File content must be specified.";
-        public const string CouldNotReadPathRoot = "This drive's path root could not be determined.";
+        public const string FileNameInvalid = "A valid filename was not specified.";
+        public const string FileContentInvalid = "File content must be specified.";
+        public const string PathRootParseError = "This drive's path root could not be determined.";
 
-        public const string InvalidFileSizeZero = "File size cannot be 0.";
-        public const string InvalidFileSizeOutOfRange = "The file size must be a positive number greater than 0.";
+        public const string FileSizeInvalidZero = "File size cannot be 0.";
+        public const string FileSizeInvalidRange = "The file size must be a positive number greater than 0.";
         public const string FileCountMissing = "The file count must be specified.";
-        public const string InvalidFileCount = "You must enter a file count of at least 1 as the first argument.";
-        public const string InvalidFileCountZero = "The file count cannot be zero.";
-        public const string ValueWithNoFlag = "A flag was not specified for ";
+        public const string FileCountInvalidRange = "You must enter a file count of at least 1 as the first argument.";
+        public const string FileCountInvalidZero = "The file count cannot be zero.";
+        public const string ValueWithNoFlag_Prefix = "A flag was not specified for ";
         public const string CanOnlyUseFlagOnce = "A flag can only be specified once.";
 
         public const string CharBankEmpty = "The character bank is empty. It must contain at least 2 characters.";
