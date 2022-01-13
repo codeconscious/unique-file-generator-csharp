@@ -17,7 +17,7 @@ public class FileHandler
     {
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
 
-        for (nuint i = 0; i < Settings.FileCount; i++)
+        for (uint i = 0; i < Settings.FileCount; i++)
         {
             var randomChars = stringFactory.CreateSingleUniqueString(10);
             var fileName = Settings.Prefix + randomChars;
