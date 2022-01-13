@@ -12,10 +12,9 @@ public static class Program
             return;
         }
 
-        Settings settings;
         try
         {
-            settings = new Settings(args);
+            var settings = new Settings(args);
 
             if (!settings.ShouldProceedDespiteHighValues())
             {
@@ -26,14 +25,14 @@ public static class Program
             var fileHandler = new FileHandler(settings);
 
             fileHandler.SaveFiles();
+
+            AnsiConsole.MarkupLine($"[green]{ResourceStrings.Completed(settings.FileCount)}[/]");
         }
         catch (Exception ex)
         {
             AnsiConsole.MarkupLine($"[red]{ResourceStrings.CancelledDueToError}{ex.Message}[/]");
             return;
         }
-
-        AnsiConsole.MarkupLine($"[green]{ResourceStrings.Completed(settings.FileCount)}[/]");
     }
 
     private static void PrintInstructions()
