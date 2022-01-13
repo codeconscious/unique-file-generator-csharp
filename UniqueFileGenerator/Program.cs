@@ -41,13 +41,13 @@ public static class Program
 
         outerTable.AddColumn("Unique File Generator");
         outerTable.AddRow("Easily create an arbitrary number of unique (by name and content) files.  " +
-            "Each filename contains a unique collection of characters.  " +
+            "Each filename contains a random collection of characters.  " +
             "You can supply optional parameters to customize files according to your needs.  " +
-            "The tool will ensure there is sufficient drive space available before starting.");
+            "The tool ensures there is sufficient drive space available before beginning.");
         outerTable.AddEmptyRow();
 
         outerTable.AddRow("At the minimum, you must specify the number of files to generate.  " +
-            "This should be an sequence of numbers with no symbols or spaces.");
+            "This should be a sequence of numbers with no symbols or spaces.");
         outerTable.AddEmptyRow();
 
         outerTable.AddRow("Examples:\n" +
