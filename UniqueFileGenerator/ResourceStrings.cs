@@ -5,7 +5,7 @@ public static class ResourceStrings
         public const string CountWarning = "You've requested the creation of many files. Do you want to continue?";
         public const string SizeWarning = "You've requested very large files. Do you want to continue?";
         public const string CancelledByUser = "Operation cancelled.";
-        public const string CancelledDueToError = "[red]The operation was aborted because an error occurred.[/]: ";
+        public const string CancelledDueToError = "[red]Operation aborted due to an error.[/]";
         public static string Completed(uint count) =>
             $"[green]{count} {(count == 1 ? "file" : "files" )} created.[/]";
 
