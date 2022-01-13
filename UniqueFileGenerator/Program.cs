@@ -37,8 +37,8 @@ public static class Program
 
     private static void PrintInstructions()
     {
-        // TODO: Clean this up a bit.
         var outerTable = new Table();
+
         outerTable.AddColumn("Unique File Generator");
         outerTable.AddRow("Easily create an arbitrary number of unique (by name and content) files.  " +
             "Each filename contains a unique collection of characters.  " +
@@ -46,15 +46,16 @@ public static class Program
             "The tool will ensure there is sufficient drive space available before starting.");
         outerTable.AddEmptyRow();
 
-        const string usage = "At the minimum, you must specify the number of files you want to generate.  " +
-            "This should be an sequence of numbers with no symbols or spaces.\n\n" +
-            "Examples:\n" +
+        outerTable.AddRow("At the minimum, you must specify the number of files to generate.  " +
+            "This should be an sequence of numbers with no symbols or spaces.");
+        outerTable.AddEmptyRow();
+
+        outerTable.AddRow("Examples:\n" +
             "   uniquefilegen 10\n" +
             "        [gray]Creates 10 files with the default settings[/]\n" +
             "   uniquefilegen 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000\n" +
             "        [gray]Creates one hundred 1MB files, each named like \"TEST-1229 ##########.txt\",\n" +
-            "        in a subfolder called \"My Output Folder\".[/]";
-        outerTable.AddRow(usage);
+            "        in a subfolder called \"My Output Folder\".[/]");
         outerTable.AddEmptyRow();
 
         var argTable = new Table();
