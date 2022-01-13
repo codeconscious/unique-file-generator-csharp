@@ -24,6 +24,9 @@ public static class ResourceStrings
         public const string ValueWithNoFlag = "A flag was not specified for ";
         public const string CanOnlyUseFlagOnce = "A flag can only be specified once.";
 
+        public const string CharBankEmpty = "The character bank is empty. It must contain at least 2 characters.";
+        public const string CharBankTooShort = "The character bank must contain at least 2 characters.";
         public const string StringCountZero = "The count of desired strings must be greater than zero.";
         public const string StringLengthZero = "The length of each string must be greater than zero.";
+        public const string LengthInvalidNegative = "The length cannot be negative.";
     }

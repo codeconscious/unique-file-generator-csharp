@@ -20,7 +20,7 @@ public sealed class RandomStringFactory
     private Random Random { get; } = new();
 
     /// <summary>
-    /// Constructor that also populates the character bank.
+    /// Constructor that populates the character bank.
     /// </summary>
     public RandomStringFactory(CharacterType charTypes)
     {
@@ -38,13 +38,13 @@ public sealed class RandomStringFactory
         if (sb.Length == 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(sb), "The character bank contains no characters.");
+                nameof(sb), ResourceStrings.CharBankEmpty);
         }
 
         if (sb.Length == 1)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(sb), "The character bank must contain at least 2 characters.");
+                nameof(sb), ResourceStrings.CharBankTooShort);
         }
 
         CharacterBank =  sb.ToString();
@@ -84,7 +84,8 @@ public sealed class RandomStringFactory
     }
 
     /// <summary>
-    /// Creates a single string containing random characters from the character bank.
+    /// Creates a single string of a specific length using random characters
+    /// from the character bank.
     /// </summary>
     /// <param name="length">The desired string length.</param>
     public string CreateSingleUniqueString(int length)
@@ -92,7 +93,7 @@ public sealed class RandomStringFactory
         if (length < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(length), "The length cannot be negative.");
+                nameof(length), ResourceStrings.LengthInvalidNegative);
         }
 
         if (length == 0)
