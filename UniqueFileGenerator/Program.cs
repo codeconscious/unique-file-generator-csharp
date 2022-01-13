@@ -29,12 +29,11 @@ public static class Program
         }
         catch (Exception ex)
         {
-            AnsiConsole.MarkupLine(ResourceStrings.CancelledDueToError);
-            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
+            AnsiConsole.MarkupLine($"[red]{ResourceStrings.CancelledDueToError}{ex.Message}[/]");
             return;
         }
 
-        AnsiConsole.MarkupLine(ResourceStrings.Completed(settings.FileCount));
+        AnsiConsole.MarkupLine($"[green]{ResourceStrings.Completed(settings.FileCount)}[/]");
     }
 
     private static void PrintInstructions()
