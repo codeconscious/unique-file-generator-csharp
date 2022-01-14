@@ -66,8 +66,8 @@ public static class Program
         argTable.Columns[0].PadRight(3);
         argTable.AddRow("-p", "Add a filename prefix. If the prefix ends with a non-alphanumeric character, no space will be added after the prefix; otherwise, one will be automatically added.");
         argTable.AddRow("-e", "The file extension of the generated files. The opening period is optional. If not specified, no extension is added.");
-        argTable.AddRow("-o", "The desired size of each file in bytes, which will be populated with random characters. If not specified, each file will only contain its own name.");
-        argTable.AddRow("-s", "The output subfolder, which will be created if needed. If not supplied, \"output\" is used by default.");
+        argTable.AddRow("-s", "The desired size of each file in bytes, which will be populated with random characters. If not specified, each file will only contain its own name.");
+        argTable.AddRow("-o", "The output subfolder, which will be created if needed. If not supplied, \"output\" is used by default.");
 
         outerTable.AddRow(argTable);
 
