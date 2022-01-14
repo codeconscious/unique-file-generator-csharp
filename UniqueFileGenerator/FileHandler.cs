@@ -32,7 +32,11 @@ public class FileHandler
 
     public void SaveFiles()
     {
-        EnsureSufficientDriveSpace();
+        var hasSufficientSpace = EnsureSufficientDriveSpace();
+
+        // Abort if we've confirmed there is insufficient available drive space.
+        if (hasSufficientSpace.HasValue && !hasSufficientSpace.Value)
+            throw new InvalidOperationException(ResourceStrings.DriveSpaceInsufficient);
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
@@ -46,19 +50,35 @@ public class FileHandler
         }
     }
 
-    private void EnsureSufficientDriveSpace()
+    /// <summary>
+    /// Checks that there is sufficient available space on the drive for the operation.
+    /// </summary>
+    /// <returns>
+    ///     A nullable bool. True and false indicate a clear result.
+    ///     Null indicates that the checking operation failed.
+    /// </returns>
+    private bool? EnsureSufficientDriveSpace()
     {
         // Don't allow the drive space to drop before this amount of bytes.
-        const long driveSpaceToKeepAvailable = 1_000_000_000; // Roughly 1GB
+        const long driveSpaceToKeepAvailable = 500_000_000; // Roughly 0.5GB
 
-        var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        var rootPath = Path.GetPathRoot(appPath)
-                       ?? throw new InvalidOperationException(ResourceStrings.PathRootParseError);
-        var driveInfo = new DriveInfo(rootPath);
-        var availableFreeSpace = driveInfo.AvailableFreeSpace - driveSpaceToKeepAvailable;
+        try
+        {
+            var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-        if (availableFreeSpace < Settings.DiskSpaceNecessary)
-            throw new InvalidOperationException(ResourceStrings.InsufficientDriveSpace);
+            var rootPath = Path.GetPathRoot(appPath);
+            if (rootPath == null)
+                return null;
+
+            var driveInfo = new DriveInfo(rootPath);
+            var availableFreeSpace = driveInfo.AvailableFreeSpace - driveSpaceToKeepAvailable;
+
+            return Settings.DiskSpaceNecessary < availableFreeSpace;
+        }
+        catch (System.Exception)
+        {
+             return null;
+        }
     }
 
     private class FileData

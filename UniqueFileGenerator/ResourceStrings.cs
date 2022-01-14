@@ -9,7 +9,7 @@ public static class ResourceStrings
         public static string Completed(uint count) =>
             $"{count} {(count == 1 ? "file" : "files" )} created.";
 
-        public const string InsufficientDriveSpace = "There is not enough free space on this disk to continue.";
+        public const string DriveSpaceInsufficient = "There is not enough free space on this disk to continue.";
         public const string DriveInfoReadError = "An unknown error occurred when reading the drive information.";
 
         public const string FileNameInvalid = "A valid filename was not specified.";
