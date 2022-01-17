@@ -17,6 +17,7 @@ Arg. | Description
 -e | The file extension of the generated files. The opening period is optional. If not specified, no extension is added.
 -s | The desired size of each file in bytes, which will be populated with random characters. If not specified, each file will only contain its own name.
 -o | The output subfolder, which will be created if needed. If not supplied, "output" is used by default.
+-d | A delay in milliseconds to be applied between each file's creation. Defaults to 0 if unspecified.
 
 *Examples:*
 

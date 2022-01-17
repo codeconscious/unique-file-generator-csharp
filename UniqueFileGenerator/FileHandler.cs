@@ -63,6 +63,9 @@ public class FileHandler
                     fileStream.Write(content, 0, content.Length);
 
                     task.Increment(incrementBy);
+
+                    if (Settings.FileCreationDelay > 0)
+                        Thread.Sleep(Settings.FileCreationDelay);
                 }
             });
     }

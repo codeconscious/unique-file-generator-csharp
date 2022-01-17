@@ -7,6 +7,7 @@ public class Settings
     public string Extension { get; }
     public string OutputDirectory { get; }
     public int? SizeInBytes { get; }
+    public int FileCreationDelay { get; }
     public CharacterType CharacterTypes { get; }
 
     public long DiskSpaceNecessary => FileCount * (SizeInBytes ?? (Prefix.Length + 10));
@@ -14,7 +15,7 @@ public class Settings
     public bool IsLargeSize => SizeInBytes > 100_000_000;
 
     private static readonly IReadOnlyList<string> SupportedFlags =
-        new List<string>() { "-p", "-e", "-o", "-s" };
+        new List<string>() { "-p", "-e", "-o", "-s", "-d" };
 
     public Settings(string[] args)
     {
@@ -52,6 +53,18 @@ public class Settings
                 throw new ArgumentOutOfRangeException(
                     nameof(parsedSize), ResourceStrings.FileSizeInvalidRange);
             }
+        }
+
+        // Parse the file creation delay, if provided.
+        if (argDict.ContainsKey("-d") &&
+            int.TryParse(argDict["-d"], out var parsedDelay))
+        {
+            FileCreationDelay = parsedDelay switch
+            {
+                < 0 => throw new ArgumentOutOfRangeException(
+                            nameof(parsedDelay), ResourceStrings.FileCreationDelayOutOfRange),
+                _ => parsedDelay
+            };
         }
 
         // TODO: Add a command line flag to specify character types. (Separate for filenames and content?)

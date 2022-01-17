@@ -29,4 +29,5 @@ public static class ResourceStrings
         public const string StringCountZero = "The count of desired strings must be greater than zero.";
         public const string StringLengthZero = "The length of each string must be greater than zero.";
         public const string LengthInvalidNegative = "The length cannot be negative.";
+        public const string FileCreationDelayOutOfRange = "The file creation delay must be 0 or higher.";
     }
