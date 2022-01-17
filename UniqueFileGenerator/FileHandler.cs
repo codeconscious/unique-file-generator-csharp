@@ -40,14 +40,31 @@ public class FileHandler
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
-        foreach (var file in GetFileData())
-        {
-            var path = Settings.OutputDirectory + file.Name + Settings.Extension;
-            var content = new UTF8Encoding(true).GetBytes(file.Content);
+        AnsiConsole.Progress()
+            .AutoClear(true)
+            .Columns(new ProgressColumn[]
+            {
+                new TaskDescriptionColumn(),
+                new ProgressBarColumn(),
+                new PercentageColumn(),
+                new SpinnerColumn(),
+            })
+            .Start(ctx =>
+            {
+                var task = ctx.AddTask("File Creation");
+                var incrementBy = 100f / Settings.FileCount;
 
-            using var fileStream = File.Create(path);
-            fileStream.Write(content, 0, content.Length);
-        }
+                foreach (var file in GetFileData())
+                {
+                    var path = Settings.OutputDirectory + file.Name + Settings.Extension;
+                    var content = new UTF8Encoding(true).GetBytes(file.Content);
+
+                    using var fileStream = File.Create(path);
+                    fileStream.Write(content, 0, content.Length);
+
+                    task.Increment(incrementBy);
+                }
+            });
     }
 
     /// <summary>
