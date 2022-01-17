@@ -119,6 +119,10 @@ public class Settings
         return (fileCount, argDict);
     }
 
+    /// <summary>
+    /// Confirm with the user if they wish to continue despite higher-than-expected values.
+    /// </summary>
+    /// <returns>A bool indicating whether to continue (true) or cancel.</returns>
     public bool ShouldProceedDespiteHighValues()
     {
         // If the user requested a high number of files, confirm the operation.
