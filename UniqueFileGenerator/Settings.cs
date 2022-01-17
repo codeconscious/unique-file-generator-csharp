@@ -13,6 +13,7 @@ public class Settings
     public long DiskSpaceNecessary => FileCount * (SizeInBytes ?? (Prefix.Length + 10));
     public bool IsHighFileCount => FileCount > 50_000;
     public bool IsLargeSize => SizeInBytes > 100_000_000;
+    public bool IsLongDelay => FileCreationDelay > 60_000; // 1m
 
     private static readonly IReadOnlyList<string> SupportedFlags =
         new List<string>() { "-p", "-e", "-o", "-s", "-d" };
@@ -126,6 +127,10 @@ public class Settings
 
         // If the user requested a very large file sizes, confirm the operation.
         if (IsLargeSize && !AnsiConsole.Confirm(ResourceStrings.SizeWarning))
+            return false;
+
+        // If the user requested a very long delay between each file, confirm the operation.
+        if (IsLongDelay && !AnsiConsole.Confirm(ResourceStrings.DelayWarning))
             return false;
 
         return true;
