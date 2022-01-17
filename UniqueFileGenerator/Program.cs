@@ -26,7 +26,7 @@ public static class Program
 
             fileHandler.SaveFiles();
 
-            AnsiConsole.MarkupLine($"[green]{ResourceStrings.Completed(settings.FileCount)}[/]");
+            AnsiConsole.MarkupLine($"{ResourceStrings.Completed(settings.FileCount)}");
         }
         catch (Exception ex)
         {
