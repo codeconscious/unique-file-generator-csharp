@@ -2,9 +2,9 @@ namespace UniqueFileGenerator;
 
 public static class ResourceStrings
     {
-        public const string CountWarning = "You've requested the creation of many files. Do you want to continue?";
-        public const string SizeWarning = "You've requested very large files. Do you want to continue?";
-        public const string DelayWarning = "You've requested a very long delay between files. Do you want to continue?";
+        public const string CountWarning = "You've requested very many files. Continue?";
+        public const string SizeWarning = "You've requested very large files. Continue?";
+        public const string DelayWarning = "You've requested a very long delay between files. Continue?";
         public const string CancelledByUser = "Operation cancelled.";
         public const string CancelledDueToError = "Operation aborted: ";
         public static string Completed(uint count) =>
