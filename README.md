@@ -22,9 +22,9 @@ Arg. | Description
 *Examples:*
 
 ```
-uniquefilegen 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000
+uniquefilegen 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000
 ```
-Creates one hundred 1MB files, each named similarly to "TEST-1229 ##########.txt", in a subfolder called "My Output Folder".
+Creates one hundred 1MB files, each named similarly to "TEST-1229 ##########.txt", with a 1s break between each file in a subfolder called "My Output Folder".
 
 
 ```
