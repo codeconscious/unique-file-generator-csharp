@@ -80,8 +80,14 @@ public class Settings
 
         var argQueue = new Queue<string>(args);
 
-        if (!uint.TryParse(argQueue.Dequeue(), out var fileCount))
-            throw new InvalidOperationException(ResourceStrings.FileCountInvalidRange);
+        var fileCountText = argQueue.Dequeue().Replace(",", "");
+        if (!uint.TryParse(fileCountText, out var fileCount))
+        {
+            if (fileCountText.All(char.IsDigit)) // Numeric, but too high
+                throw new InvalidOperationException(ResourceStrings.FileCountTooHigh);
+            else // Any other invalid string (e.g., negative number, letters, symbols, etc.)
+                throw new InvalidOperationException(ResourceStrings.FileCountInvalidRange);
+        }
 
         if (fileCount == 0)
             throw new ArgumentOutOfRangeException(

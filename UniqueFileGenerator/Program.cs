@@ -47,7 +47,7 @@ public static class Program
         outerTable.AddEmptyRow();
 
         outerTable.AddRow("At the minimum, you must specify the number of files to generate.  " +
-            "This should be a sequence of numbers with no symbols or spaces.");
+            "This should be a sequence of numbers (with optional commas).");
         outerTable.AddEmptyRow();
 
         var argTable = new Table();
@@ -68,8 +68,8 @@ public static class Program
         outerTable.AddRow("Examples:\n" +
             "   uniquefilegen 10\n" +
             "        [gray]Creates 10 files with the default settings[/]\n" +
-            "   uniquefilegen 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000\n" +
-            "        [gray]Creates one hundred 1MB files, each named like \"TEST-1229 ##########.txt\",\n" +
+            "   uniquefilegen 1,000 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000\n" +
+            "        [gray]Creates one thousand 1MB files, each named like \"TEST-1229 ##########.txt\",\n" +
             "        in a subfolder called \"My Output Folder\", with a 1s delay after each new file.[/]");
 
         outerTable.AddEmptyRow();

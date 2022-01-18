@@ -21,6 +21,7 @@ public static class ResourceStrings
         public const string FileSizeInvalidRange = "The file size must be a positive number greater than 0.";
         public const string FileCountMissing = "The file count must be specified.";
         public const string FileCountInvalidRange = "You must enter a file count of at least 1 as the first argument.";
+        public const string FileCountTooHigh = "You must enter a file count between 1 and 4,294,967,295 (inclusive) as the first argument.";
         public const string FileCountInvalidZero = "The file count cannot be zero.";
         public const string ValueWithNoFlag_Prefix = "A flag was not specified for ";
         public const string FlagCanBeUsedOnce = "A flag can only be specified once.";
