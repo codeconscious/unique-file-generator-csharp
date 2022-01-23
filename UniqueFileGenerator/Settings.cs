@@ -92,8 +92,10 @@ public class Settings
         }
 
         if (fileCount == 0)
+        {
             throw new ArgumentOutOfRangeException(
                 nameof(fileCount), ResourceStrings.FileCountInvalidZero);
+        }
 
         var argDict = new Dictionary<string, string>();
 
@@ -114,8 +116,10 @@ public class Settings
             else // Not a flag, so treat as a flag value.
             {
                 if (string.IsNullOrWhiteSpace(currentFlag))
+                {
                     throw new InvalidOperationException(
                         ResourceStrings.ValueWithNoFlag_Prefix + thisArg);
+                }
 
                 if (argDict.ContainsKey(currentFlag))
                     argDict[currentFlag] += " " + thisArg;
