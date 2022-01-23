@@ -1,4 +1,6 @@
 using System.Text;
+using System.IO;
+using System.Threading;
 
 namespace UniqueFileGenerator;
 
@@ -84,7 +86,7 @@ public class FileHandler
 
         try
         {
-            var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var appPath = System.AppContext.BaseDirectory; // System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             var rootPath = Path.GetPathRoot(appPath);
             if (rootPath == null)
