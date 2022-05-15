@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using System.IO;
 using System.Threading;
 
@@ -32,7 +32,7 @@ public class FileHandler
         }
     }
 
-    public void SaveFiles()
+    public void CreateFiles()
     {
         var hasSufficientSpace = EnsureSufficientDriveSpace();
 
@@ -42,6 +42,7 @@ public class FileHandler
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
+        // Create the files and show a progress bar.
         AnsiConsole.Progress()
             .AutoClear(true)
             .Columns(new ProgressColumn[]
@@ -73,7 +74,7 @@ public class FileHandler
     }
 
     /// <summary>
-    /// Checks that there is sufficient available space on the drive for the operation.
+    /// Checks, if possible, that there is sufficient available space on the drive for the operation.
     /// </summary>
     /// <returns>
     ///     A nullable bool. True and false indicate a clear result.
@@ -81,7 +82,7 @@ public class FileHandler
     /// </returns>
     private bool? EnsureSufficientDriveSpace()
     {
-        // Don't allow the drive space to drop before this amount of bytes.
+        // Don't allow the drive space to drop below this size in bytes.
         const long driveSpaceToKeepAvailable = 500_000_000; // Roughly 0.5GB
 
         try
@@ -97,7 +98,7 @@ public class FileHandler
 
             return Settings.DiskSpaceNecessary < availableFreeSpace;
         }
-        catch (System.Exception)
+        catch (Exception)
         {
              return null;
         }
@@ -116,7 +117,7 @@ public class FileHandler
             if (string.IsNullOrWhiteSpace(content))
                 throw new ArgumentException(ResourceStrings.FileContentInvalid, nameof(content));
 
-            Name = name;
+            Name = name.Trim();
             Content = content;
         }
     }

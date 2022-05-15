@@ -22,7 +22,7 @@ public static class Program
 
             var fileHandler = new FileHandler(settings);
 
-            fileHandler.SaveFiles();
+            fileHandler.CreateFiles();
 
             AnsiConsole.MarkupLine($"{ResourceStrings.Completed(settings.FileCount)}");
         }
