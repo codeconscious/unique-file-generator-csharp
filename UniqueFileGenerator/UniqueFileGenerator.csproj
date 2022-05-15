@@ -5,10 +5,9 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
     <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Spectre.Console" Version="0.43.0"/>
+    <PackageReference Include="Spectre.Console" Version="0.43.0" />
   </ItemGroup>
 </Project>
