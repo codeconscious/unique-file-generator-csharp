@@ -56,39 +56,6 @@ public sealed class RandomStringFactory
     }
 
     /// <summary>
-    /// Creates a collection of strings, each containing random characters
-    /// from the character bank, according to the settings provided.
-    /// </summary>
-    /// <param name="count">The number of strings.</param>
-    /// <param name="lengthOfEach">The length of each string.</param>
-    public IEnumerable<string> CreateUniqueStrings(int count, int lengthOfEach)
-    {
-        if (count < 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(count), ResourceStrings.StringCountZero);
-        }
-
-        if (lengthOfEach < 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(lengthOfEach), ResourceStrings.StringLengthZero);
-        }
-
-        if (count == 0)
-            return Enumerable.Empty<string>();
-
-        var set = new HashSet<string>();
-
-        while (set.Count < count)
-        {
-            set.Add(CreateSingleUniqueString(lengthOfEach));
-        }
-
-        return set;
-    }
-
-    /// <summary>
     /// Creates a single string of a specific length using random characters
     /// from the character bank.
     /// </summary>
