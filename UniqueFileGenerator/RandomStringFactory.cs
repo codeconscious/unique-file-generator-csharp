@@ -1,4 +1,4 @@
-namespace UniqueFileGenerator;
+﻿namespace UniqueFileGenerator;
 
 /// <summary>
 /// Handles all operations for generating random strings.
@@ -17,11 +17,13 @@ public sealed class RandomStringFactory
     /// All characters that can be randomly selected by this class's methods.
     /// </summary>
     private string CharacterBank { get; }
+
     private Random Random { get; } = new();
 
     /// <summary>
     /// Constructor that populates the character bank.
     /// </summary>
+    /// <param name="charTypes">An enum representing one or more character types.</param>
     public RandomStringFactory(CharacterType charTypes)
     {
         ArgumentNullException.ThrowIfNull(nameof(charTypes));
