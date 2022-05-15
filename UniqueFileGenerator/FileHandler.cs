@@ -38,7 +38,7 @@ public class FileHandler
 
         // Abort if we've confirmed there is insufficient available drive space.
         if (hasSufficientSpace.HasValue && !hasSufficientSpace.Value)
-            throw new InvalidOperationException(ResourceStrings.DriveSpaceInsufficient);
+            throw new InvalidOperationException(Resources.DriveSpaceInsufficient);
 
         Directory.CreateDirectory(Settings.OutputDirectory);
 
@@ -112,10 +112,10 @@ public class FileHandler
         public FileData(string name, string content)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException(ResourceStrings.FileNameInvalid, nameof(name));
+                throw new ArgumentException(Resources.FileNameInvalid, nameof(name));
 
             if (string.IsNullOrWhiteSpace(content))
-                throw new ArgumentException(ResourceStrings.FileContentInvalid, nameof(content));
+                throw new ArgumentException(Resources.FileContentInvalid, nameof(content));
 
             Name = name.Trim();
             Content = content;

@@ -47,14 +47,14 @@ public class Settings
                 SizeInBytes = parsedSize switch
                 {
                     0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedSize), ResourceStrings.FileSizeInvalidZero),
+                            nameof(parsedSize), Resources.FileSizeInvalidZero),
                     _ => parsedSize
                 };
             }
             else // A non-numeric value was passed in.
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(parsedSize), ResourceStrings.FileSizeInvalidRange);
+                    nameof(parsedSize), Resources.FileSizeInvalidRange);
             }
         }
 
@@ -65,7 +65,7 @@ public class Settings
             FileCreationDelay = parsedDelay switch
             {
                 < 0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedDelay), ResourceStrings.FileCreationDelayOutOfRange),
+                            nameof(parsedDelay), Resources.FileCreationDelayOutOfRange),
                 _ => parsedDelay
             };
         }
@@ -78,7 +78,7 @@ public class Settings
     private static (uint Count, Dictionary<string, string> argDict) ParseArgs(string[] args)
     {
         if (args.Length == 0)
-            throw new ArgumentException(ResourceStrings.FileCountMissing, nameof(args));
+            throw new ArgumentException(Resources.FileCountMissing, nameof(args));
 
         var argQueue = new Queue<string>(args);
 
@@ -86,15 +86,15 @@ public class Settings
         if (!uint.TryParse(fileCountText, out var fileCount))
         {
             if (fileCountText.All(char.IsDigit)) // Numeric, but too high
-                throw new InvalidOperationException(ResourceStrings.FileCountTooHigh);
+                throw new InvalidOperationException(Resources.FileCountTooHigh);
             else // Any other invalid string (e.g., negative number, letters, symbols, etc.)
-                throw new InvalidOperationException(ResourceStrings.FileCountInvalidRange);
+                throw new InvalidOperationException(Resources.FileCountInvalidRange);
         }
 
         if (fileCount == 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(fileCount), ResourceStrings.FileCountInvalidZero);
+                nameof(fileCount), Resources.FileCountInvalidZero);
         }
 
         var argDict = new Dictionary<string, string>();
@@ -109,7 +109,7 @@ public class Settings
             if (SupportedFlags.Contains(thisArg))
             {
                 if (argDict.ContainsKey(thisArg))
-                    throw new InvalidOperationException(ResourceStrings.FlagCanBeUsedOnce);
+                    throw new InvalidOperationException(Resources.FlagCanBeUsedOnce);
 
                 currentFlag = thisArg;
             }
@@ -118,7 +118,7 @@ public class Settings
                 if (string.IsNullOrWhiteSpace(currentFlag))
                 {
                     throw new InvalidOperationException(
-                        ResourceStrings.ValueWithNoFlag_Prefix + thisArg);
+                        string.Format(Resources.ValueWithNoFlag, thisArg));
                 }
 
                 if (argDict.ContainsKey(currentFlag))
@@ -138,15 +138,15 @@ public class Settings
     public bool ShouldProceedDespiteHighValues()
     {
         // If the user requested a high number of files, confirm the operation.
-        if (IsHighFileCount && !AnsiConsole.Confirm(ResourceStrings.CountWarning))
+        if (IsHighFileCount && !AnsiConsole.Confirm(Resources.CountWarning))
             return false;
 
         // If the user requested a very large file sizes, confirm the operation.
-        if (IsLargeSize && !AnsiConsole.Confirm(ResourceStrings.SizeWarning))
+        if (IsLargeSize && !AnsiConsole.Confirm(Resources.SizeWarning))
             return false;
 
         // If the user requested a very long delay between each file, confirm the operation.
-        if (IsLongDelay && !AnsiConsole.Confirm(ResourceStrings.DelayWarning))
+        if (IsLongDelay && !AnsiConsole.Confirm(Resources.DelayWarning))
             return false;
 
         return true;

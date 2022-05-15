@@ -16,7 +16,7 @@ public static class Program
 
             if (!settings.ShouldProceedDespiteHighValues())
             {
-                AnsiConsole.WriteLine(ResourceStrings.CancelledByUser);
+                AnsiConsole.WriteLine(Resources.CancelledByUser);
                 return;
             }
 
@@ -24,11 +24,13 @@ public static class Program
 
             fileHandler.CreateFiles();
 
-            AnsiConsole.MarkupLine($"{ResourceStrings.Completed(settings.FileCount)}");
+            AnsiConsole.MarkupLine(settings.FileCount == 1
+                ? Resources.CompletedOne
+                : string.Format(Resources.CompletedZeroOrMultiple, settings.FileCount));
         }
         catch (Exception ex)
         {
-            AnsiConsole.MarkupLine($"[red]{ResourceStrings.CancelledDueToError}{ex.Message}[/]");
+            AnsiConsole.MarkupLine($"[red]{Resources.CancelledDueToError} {ex.Message}[/]");
             return;
         }
     }
@@ -37,6 +39,7 @@ public static class Program
     {
         var outerTable = new Table();
 
+        // TODO: Move this text to resources.
         outerTable.AddColumn("Unique File Generator");
         outerTable.AddRow("Easily create an arbitrary number of unique (by name and content) files.  " +
             "Each filename contains a random collection of characters.  " +

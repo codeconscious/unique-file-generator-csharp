@@ -43,13 +43,13 @@ public sealed class RandomStringFactory
         if (sb.Length == 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(sb), ResourceStrings.CharBankEmpty);
+                nameof(sb), Resources.CharBankEmpty);
         }
 
         if (sb.Length == 1)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(sb), ResourceStrings.CharBankTooShort);
+                nameof(sb), Resources.CharBankTooShort);
         }
 
         CharacterBank = sb.ToString();
@@ -65,7 +65,7 @@ public sealed class RandomStringFactory
         if (length < 0)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(length), ResourceStrings.LengthInvalidNegative);
+                nameof(length), Resources.LengthInvalidNegative);
         }
 
         if (length == 0)
