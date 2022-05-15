@@ -14,7 +14,7 @@ public sealed class RandomStringFactory
         };
 
     /// <summary>
-    /// All characters that can be randomly selected by this class's methods.
+    /// All characters that can be randomly selected by this class's other methods.
     /// </summary>
     private string CharacterBank { get; }
 
@@ -30,12 +30,15 @@ public sealed class RandomStringFactory
 
         var sb = new System.Text.StringBuilder();
 
-        // Iterate through the character types, appending only relevant text.
-        foreach (CharacterType type in Enum.GetValues(typeof(CharacterType)))
-        {
-            if (charTypes.HasFlag(type))
-                sb.Append(CharactersByCategory[type]);
-        }
+        // Get the distinct characters for each provided character type.
+        var chars = string.Concat(
+            Enum.GetValues(typeof(CharacterType))
+                .Cast<CharacterType>()
+                .Where(type => charTypes.HasFlag(type))
+                .SelectMany(type => CharactersByCategory[type])
+                .Distinct());
+
+        sb.Append(chars);
 
         if (sb.Length == 0)
         {
@@ -49,7 +52,7 @@ public sealed class RandomStringFactory
                 nameof(sb), ResourceStrings.CharBankTooShort);
         }
 
-        CharacterBank =  sb.ToString();
+        CharacterBank = sb.ToString();
     }
 
     /// <summary>
