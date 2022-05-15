@@ -30,7 +30,7 @@ public sealed class RandomStringFactory
 
         var sb = new System.Text.StringBuilder();
 
-        // Get the distinct characters for each provided character type.
+        // Get the combined distinct characters for each provided character type.
         var chars = string.Concat(
             Enum.GetValues(typeof(CharacterType))
                 .Cast<CharacterType>()
@@ -60,7 +60,7 @@ public sealed class RandomStringFactory
     /// from the character bank.
     /// </summary>
     /// <param name="length">The desired string length.</param>
-    public string CreateSingleUniqueString(int length)
+    public string CreateUniqueString(int length)
     {
         if (length < 0)
         {

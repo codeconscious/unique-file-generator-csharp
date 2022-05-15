@@ -21,11 +21,11 @@ public class FileHandler
 
         for (uint i = 0; i < Settings.FileCount; i++)
         {
-            var randomChars = stringFactory.CreateSingleUniqueString(10);
+            var randomChars = stringFactory.CreateUniqueString(10);
             var fileName = Settings.Prefix + randomChars;
 
             var contents = Settings.SizeInBytes.HasValue
-                ? stringFactory.CreateSingleUniqueString(Settings.SizeInBytes.Value)
+                ? stringFactory.CreateUniqueString(Settings.SizeInBytes.Value)
                 : fileName;
 
             yield return new FileData(fileName, contents);
