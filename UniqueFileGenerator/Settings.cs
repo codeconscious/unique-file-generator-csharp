@@ -101,6 +101,7 @@ public class Settings
 
         // Iterate through the args. Any non-flag arg is considered to be related to the previous one.
         // If there are multiple args for any such flag, they will be combined in a single string.
+        // TODO: Refactor to remove the unsightly arrow-shaped conditionals.
         var currentFlag = "";
         while (argQueue.Any())
         {
