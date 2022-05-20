@@ -46,7 +46,7 @@ public static class Program
 
         // TODO: Move this text to resources.
         outerTable.AddColumn("Unique File Generator");
-        outerTable.AddRow("Easily create an arbitrary number of unique (by name and content) files.  " +
+        outerTable.AddRow("Quickly and easily create an arbitrary number of unique (by name and content) files.  " +
             "Each filename contains a random collection of characters.  " +
             "You can also supply optional parameters to customize files according to your needs.  " +
             "The tool checks that there is sufficient drive space available before starting.");
