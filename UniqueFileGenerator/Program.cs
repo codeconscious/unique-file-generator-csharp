@@ -26,7 +26,8 @@ public static class Program
 
             AnsiConsole.MarkupLine(settings.FileCount == 1
                 ? Resources.CompletedOne
-                : string.Format(Resources.CompletedZeroOrMultiple, settings.FileCount));
+                : string.Format(Resources.CompletedZeroOrMultiple,
+                                settings.FileCount.ToString("#,##0")));
         }
         catch (Exception ex)
         {
@@ -37,14 +38,18 @@ public static class Program
 
     private static void PrintInstructions()
     {
-        var outerTable = new Table();
+        var outerTable = new Table
+        {
+            Width = 80,
+            Border = TableBorder.HeavyHead
+        };
 
         // TODO: Move this text to resources.
         outerTable.AddColumn("Unique File Generator");
         outerTable.AddRow("Easily create an arbitrary number of unique (by name and content) files.  " +
             "Each filename contains a random collection of characters.  " +
-            "You can supply optional parameters to customize files according to your needs.  " +
-            "The tool ensures there is sufficient drive space available before beginning.");
+            "You can also supply optional parameters to customize files according to your needs.  " +
+            "The tool checks that there is sufficient drive space available before starting.");
         outerTable.AddEmptyRow();
 
         outerTable.AddRow("At the minimum, you must specify the number of files to generate.  " +
@@ -68,10 +73,12 @@ public static class Program
 
         outerTable.AddRow("Examples:\n" +
             "   uniquefilegen 10\n" +
-            "        [gray]Creates 10 files with the default settings[/]\n" +
-            "   uniquefilegen 1,000 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000\n" +
-            "        [gray]Creates one thousand 1MB files, each named like \"TEST-1229 ##########.txt\",\n" +
-            "        in a subfolder called \"My Output Folder\", with a 1s delay after each new file.[/]");
+            "        Creates 10 files with the default settings\n" +
+            "   uniquefilegen 1,000 -p TEST-1229 -e txt -o My Output Folder\n" +
+            "                 -s 1000000 -d 1000\n" +
+            "        Creates one thousand 1MB files, each named like\n" +
+            "        \"TEST-1229 ##########.txt\", in a subfolder called\n" +
+            "        \"My Output Folder\", with a 1s delay after each new file.");
 
         outerTable.AddEmptyRow();
         outerTable.AddRow("Homepage: https://github.com/codeconscious/unique-file-generator");

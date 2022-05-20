@@ -4,18 +4,49 @@ namespace UniqueFileGenerator;
 
 public class Settings
 {
-    public uint FileCount { get;}
+    /// <summary>
+    /// The total number of files to create.
+    /// </summary>
+    public uint FileCount { get; }
+
+    /// <summary>
+    /// Text that should be prepend to each file name.
+    /// </summary>
     public string Prefix { get; }
+
+    /// <summary>
+    /// The extension for each created file.
+    /// </summary>
     public string Extension { get; }
+
+    /// <summary>
+    /// The directory in which the files should be created.
+    /// </summary>
     public string OutputDirectory { get; }
+
+    /// <summary>
+    /// The size of each created file.
+    /// </summary>
     public int? SizeInBytes { get; }
-    public int FileCreationDelay { get; }
+
+    /// <summary>
+    /// A delay in milliseconds to add between the creation of each file.
+    /// </summary>
+    public int FileCreationDelayMs { get; }
+
+    /// <summary>
+    /// The type or types of random characters that should be used.
+    /// </summary>
     public CharacterType CharacterTypes { get; }
 
+    /// <summary>
+    /// The amount of disk space that is necessary for the operation.
+    /// </summary>
     public long DiskSpaceNecessary => FileCount * (SizeInBytes ?? (Prefix.Length + 10));
+
     public bool IsHighFileCount => FileCount > 50_000;
     public bool IsLargeSize => SizeInBytes > 100_000_000;
-    public bool IsLongDelay => FileCreationDelay > 60_000; // 1m
+    public bool IsLongDelay => FileCreationDelayMs > 60_000; // 1m
 
     private static readonly IReadOnlyList<string> SupportedFlags =
         new List<string>() { "-p", "-e", "-o", "-s", "-d" };
@@ -39,6 +70,7 @@ public class Settings
             ? "." + Path.DirectorySeparatorChar + argDict["-o"] + Path.DirectorySeparatorChar
             : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
 
+        // Parse the requested file size, if provided.
         // TODO: Accept sizes in formats like "30KB" or "10.4MB"
         if (argDict.ContainsKey("-s"))
         {
@@ -62,7 +94,7 @@ public class Settings
         if (argDict.ContainsKey("-d") &&
             int.TryParse(argDict["-d"], out var parsedDelay))
         {
-            FileCreationDelay = parsedDelay switch
+            FileCreationDelayMs = parsedDelay switch
             {
                 < 0 => throw new ArgumentOutOfRangeException(
                             nameof(parsedDelay), Resources.FileCreationDelayOutOfRange),
@@ -85,10 +117,13 @@ public class Settings
         var fileCountText = argQueue.Dequeue().Replace(",", "");
         if (!uint.TryParse(fileCountText, out var fileCount))
         {
-            if (fileCountText.All(char.IsDigit)) // Numeric, but too high
+            // If all characters are digits, then a number that was too high was provided.
+            if (fileCountText.All(char.IsDigit))
                 throw new InvalidOperationException(Resources.FileCountTooHigh);
-            else // Any other invalid string (e.g., negative number, letters, symbols, etc.)
-                throw new InvalidOperationException(Resources.FileCountInvalidRange);
+
+            // Otherwise, some invalid string was provided --
+            // e.g., negative number, letters, symbols, etc.
+            throw new InvalidOperationException(Resources.FileCountInvalidRange);
         }
 
         if (fileCount == 0)
@@ -99,22 +134,24 @@ public class Settings
 
         var argDict = new Dictionary<string, string>();
 
-        // Iterate through the args. Any non-flag arg is considered to be related to the previous one.
+        // Iterate through the args. Any non-flag arg is considered a value for the last-processed flag.
         // If there are multiple args for any such flag, they will be combined in a single string.
-        // TODO: Refactor to remove the unsightly arrow-shaped conditionals.
         var currentFlag = "";
         while (argQueue.Any())
         {
             var thisArg = argQueue.Dequeue();
 
+            // If this is a supported flag.
             if (SupportedFlags.Contains(thisArg))
             {
+                // Flags cannot be used twice.
                 if (argDict.ContainsKey(thisArg))
                     throw new InvalidOperationException(Resources.FlagCanBeUsedOnce);
 
                 currentFlag = thisArg;
             }
-            else // Not a flag, so treat as a flag value.
+            // Otherwise, consider this a value for the current flag.
+            else
             {
                 if (string.IsNullOrWhiteSpace(currentFlag))
                 {
@@ -122,6 +159,7 @@ public class Settings
                         string.Format(Resources.ValueWithNoFlag, thisArg));
                 }
 
+                // Appends the value to current flag's value string.
                 if (argDict.ContainsKey(currentFlag))
                     argDict[currentFlag] += " " + thisArg;
                 else

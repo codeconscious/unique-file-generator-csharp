@@ -67,8 +67,8 @@ public class FileHandler
 
                     task.Increment(incrementBy);
 
-                    if (Settings.FileCreationDelay > 0)
-                        Thread.Sleep(Settings.FileCreationDelay);
+                    if (Settings.FileCreationDelayMs > 0)
+                        Thread.Sleep(Settings.FileCreationDelayMs);
                 }
             });
     }
