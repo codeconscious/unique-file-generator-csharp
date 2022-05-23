@@ -59,16 +59,16 @@ public sealed class Settings
 
         // Only add a post-prefix space when the last character is not alphanumeric.
         Prefix = argDict.ContainsKey("-p")
-            ? argDict["-p"] +(IsLastCharAlphanumeric(argDict["-p"]) ? " " : string.Empty)
+            ? argDict["-p"] + (IsLastCharAlphanumeric(argDict["-p"]) ? " " : string.Empty)
             : string.Empty;
 
         Extension = argDict.ContainsKey("-e")
             ? EnforceStartingPeriod(argDict["-e"])
             : string.Empty;
 
-        OutputDirectory = argDict.ContainsKey("-o")
-            ? "." + Path.DirectorySeparatorChar + argDict["-o"] + Path.DirectorySeparatorChar
-            : "." + Path.DirectorySeparatorChar + "output" + Path.DirectorySeparatorChar;
+        OutputDirectory = (argDict.ContainsKey("-o") ? Path.Combine(".", argDict["-o"])
+                                                     : Path.Combine(".", "output"))
+                          + Path.DirectorySeparatorChar;
 
         // Parse the requested file size, if provided.
         // TODO: Accept sizes in formats like "30KB" or "10.4MB"
@@ -79,14 +79,16 @@ public sealed class Settings
                 SizeInBytes = parsedSize switch
                 {
                     0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedSize), Resources.FileSizeInvalidZero),
+                            nameof(parsedSize),
+                            Resources.FileSizeInvalidZero),
                     _ => parsedSize
                 };
             }
             else // A non-numeric value was passed in.
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(parsedSize), Resources.FileSizeInvalidRange);
+                    nameof(parsedSize),
+                    Resources.FileSizeInvalidRange);
             }
         }
 
@@ -97,7 +99,8 @@ public sealed class Settings
             FileCreationDelayMs = parsedDelay switch
             {
                 < 0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedDelay), Resources.FileCreationDelayOutOfRange),
+                            nameof(parsedDelay),
+                            Resources.FileCreationDelayOutOfRange),
                 _ => parsedDelay
             };
         }
