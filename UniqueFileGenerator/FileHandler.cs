@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace UniqueFileGenerator;
 
-public class FileHandler
+public sealed class FileHandler
 {
     private Settings Settings { get; }
 

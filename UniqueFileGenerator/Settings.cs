@@ -2,7 +2,7 @@ using System.IO;
 
 namespace UniqueFileGenerator;
 
-public class Settings
+public sealed class Settings
 {
     /// <summary>
     /// The total number of files to create.
