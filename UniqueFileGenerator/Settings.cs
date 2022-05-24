@@ -48,30 +48,30 @@ public sealed class Settings
     public bool IsLargeSize => SizeInBytes > 100_000_000;
     public bool IsLongDelay => FileCreationDelayMs > 60_000; // 1m
 
-    public Settings(Arguments args)
+    public Settings(ParsedArguments parsedArgs)
     {
-        FileCount = args.Count;
+        FileCount = parsedArgs.FileCount;
 
-        var argDict = args.argDict;
+        var args = parsedArgs.FlagValueMap;
 
         // Only add a post-prefix space when the last character is not alphanumeric.
-        Prefix = argDict.ContainsKey("-p")
-            ? argDict["-p"] + (IsLastCharAlphanumeric(argDict["-p"]) ? " " : string.Empty)
+        Prefix = args.ContainsKey("-p")
+            ? args["-p"] + (IsLastCharAlphanumeric(args["-p"]) ? " " : string.Empty)
             : string.Empty;
 
-        Extension = argDict.ContainsKey("-e")
-            ? EnforceStartingPeriod(argDict["-e"])
+        Extension = args.ContainsKey("-e")
+            ? EnforceStartingPeriod(args["-e"])
             : string.Empty;
 
-        OutputDirectory = (argDict.ContainsKey("-o") ? Path.Combine(".", argDict["-o"])
-                                                     : Path.Combine(".", "output"))
+        OutputDirectory = (args.ContainsKey("-o") ? Path.Combine(".", args["-o"])
+                                                  : Path.Combine(".", "output"))
                           + Path.DirectorySeparatorChar;
 
         // Parse the requested file size, if provided.
         // TODO: Accept sizes in formats like "30KB" or "10.4MB"
-        if (argDict.ContainsKey("-s"))
+        if (args.ContainsKey("-s"))
         {
-            if (int.TryParse(argDict["-s"], out var parsedSize))
+            if (int.TryParse(args["-s"], out var parsedSize))
             {
                 SizeInBytes = parsedSize switch
                 {
@@ -90,8 +90,8 @@ public sealed class Settings
         }
 
         // Parse the file creation delay, if provided.
-        if (argDict.ContainsKey("-d") &&
-            int.TryParse(argDict["-d"], out var parsedDelay))
+        if (args.ContainsKey("-d") &&
+            int.TryParse(args["-d"], out var parsedDelay))
         {
             FileCreationDelayMs = parsedDelay switch
             {

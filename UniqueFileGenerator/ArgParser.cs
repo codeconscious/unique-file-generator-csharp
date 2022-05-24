@@ -1,13 +1,19 @@
 namespace UniqueFileGenerator;
 
-public record Arguments(uint Count, Dictionary<string, string> argDict);
+public sealed record ParsedArguments(uint FileCount, Dictionary<string, string> FlagValueMap);
 
 public static class ArgParser
 {
     private static readonly IReadOnlyList<string> SupportedFlags =
-        new List<string>() { "-p", "-e", "-o", "-s", "-d" };
+        new List<string>() {
+            "-p", // Prefix
+            "-e", // Extension
+            "-o", // Output directory
+            "-s", // Size
+            "-d"  // Delay
+        };
 
-    public static Arguments ParseArgs(string[] args)
+    public static ParsedArguments ParseArgs(string[] args)
     {
         if (args.Length == 0)
             throw new ArgumentException(Resources.FileCountMissing, nameof(args));
@@ -17,12 +23,12 @@ public static class ArgParser
         var fileCountText = argQueue.Dequeue().Replace(",", "");
         if (!uint.TryParse(fileCountText, out var fileCount))
         {
-            // If all characters are digits, then a number that was too high was provided.
+            // Parsing failed. If all characters are digits,
+            // then a number that was too large was provided.
             if (fileCountText.All(char.IsDigit))
                 throw new InvalidOperationException(Resources.FileCountTooHigh);
 
-            // Otherwise, some invalid string was provided --
-            // e.g., negative number, letters, symbols, etc.
+            // Otherwise, some invalid characters were provided.
             throw new InvalidOperationException(Resources.FileCountInvalidRange);
         }
 
@@ -41,7 +47,6 @@ public static class ArgParser
         {
             var thisArg = argQueue.Dequeue();
 
-            // If this is a supported flag.
             if (SupportedFlags.Contains(thisArg))
             {
                 // Flags cannot be used twice.
@@ -50,7 +55,7 @@ public static class ArgParser
 
                 currentFlag = thisArg;
             }
-            // Otherwise, consider this a value for the current flag.
+            // Treat the arg as a value for the current flag.
             else
             {
                 if (string.IsNullOrWhiteSpace(currentFlag))
@@ -67,6 +72,6 @@ public static class ArgParser
             }
         }
 
-        return new Arguments(fileCount, argDict);
+        return new ParsedArguments(fileCount, argDict);
     }
 }
