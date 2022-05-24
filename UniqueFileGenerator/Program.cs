@@ -10,9 +10,11 @@ public static class Program
             return;
         }
 
+        var parsedArgs = ArgParser.ParseArgs(args);
+
         try
         {
-            var settings = new Settings(args);
+            var settings = new Settings(parsedArgs);
 
             if (!settings.ShouldProceedDespiteHighValues())
             {
