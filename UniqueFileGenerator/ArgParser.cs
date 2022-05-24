@@ -1,7 +1,15 @@
 namespace UniqueFileGenerator;
 
-public sealed record ParsedArguments(uint FileCount, Dictionary<string, string> FlagValueMap);
+/// <summary>
+/// A DTO for passing parsed arguments from the user.
+/// </summary>
+public sealed record ParsedArguments(
+    uint FileCount,
+    IReadOnlyDictionary<string, string> FlagValueMap);
 
+/// <summary>
+/// Contains logic for parsing arguments passed from the user.
+/// </summary>
 public static class ArgParser
 {
     private static readonly IReadOnlyList<string> SupportedFlags =
@@ -13,6 +21,10 @@ public static class ArgParser
             "-d"  // Delay
         };
 
+    /// <summary>
+    /// Parsed arguments passed from the user.
+    /// </summary>
+    /// <param name="args"></param>
     public static ParsedArguments ParseArgs(string[] args)
     {
         if (args.Length == 0)
@@ -38,7 +50,7 @@ public static class ArgParser
                 nameof(fileCount), Resources.FileCountInvalidZero);
         }
 
-        var argDict = new Dictionary<string, string>();
+        var argDict = new Dictionary<string, string>(SupportedFlags.Count);
 
         // Iterate through the args. Any non-flag arg is considered a value for the last-processed flag.
         // If there are multiple args for any such flag, they will be combined in a single string.
@@ -58,6 +70,12 @@ public static class ArgParser
             // Treat the arg as a value for the current flag.
             else
             {
+                if (IsInFlagFormat(thisArg))
+                {
+                    throw new InvalidOperationException(
+                        string.Format(Resources.FlagInvalid, thisArg));
+                }
+
                 if (string.IsNullOrWhiteSpace(currentFlag))
                 {
                     throw new InvalidOperationException(
@@ -73,5 +91,17 @@ public static class ArgParser
         }
 
         return new ParsedArguments(fileCount, argDict);
+    }
+
+    /// <summary>
+    /// Determines if the given text in the format of a command line flag argument (e.g., "-e").
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    private static bool IsInFlagFormat(string text)
+    {
+        return !string.IsNullOrWhiteSpace(text) &&
+            text.Length == 2 &&
+            text[0] == '-';
     }
 }

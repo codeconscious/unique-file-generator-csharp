@@ -221,4 +221,8 @@
     <value>The file creation delay must be 0 or higher.</value>
     <comment/>
   </data>
+  <data name="FlagInvalid" xml:space="preserve">
+    <value>The argument flag "{0}" is not supported.</value>
+    <comment>{0}: A user-supplied command line argument</comment>
+  </data>
 </root>

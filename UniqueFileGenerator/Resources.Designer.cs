@@ -290,5 +290,16 @@ namespace UniqueFileGenerator {
                 return ResourceManager.GetString("ValueWithNoFlag", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A flag was not specified for &quot;{0}&quot;..
+        /// </summary>
+        internal static string FlagInvalid
+        {
+            get
+            {
+                return ResourceManager.GetString("FlagInvalid", resourceCulture);
+            }
+        }
     }
 }
