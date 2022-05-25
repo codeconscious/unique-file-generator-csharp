@@ -60,7 +60,7 @@ public static class Program
 
         var argTable = new Table();
         argTable.Border(TableBorder.None);
-        argTable.AddColumn("Arg");
+        argTable.AddColumn("Flag");
         argTable.AddColumn("Description");
         argTable.HideHeaders();
         argTable.Columns[0].PadRight(3);
