@@ -10,10 +10,10 @@ At the minimum, you must specify the number of files you want to generate. This 
 uniquefilegen [filecount]
 ```
 
-### Arguments
-Each argument is optional. You must supply at least one value for each argument used. If you supply multiple values for an argument, they will be concatenated into one string divided by spaces.
+### Argument Flags
+Each argument flag is optional. You must supply at least one value for each argument used. If you supply multiple values for an argument, they will be concatenated into one string divided by spaces.
 
-Arg. | Description
+Flag | Description
 ---- | :----
 -p | Add a filename prefix. If the prefix ends with a non-alphanumeric character, no space will be added after the prefix; otherwise, one will be automatically added.
 -e | The file extension of the generated files. The opening period is optional. If not specified, no extension is added.
