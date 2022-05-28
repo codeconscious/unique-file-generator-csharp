@@ -74,9 +74,9 @@ public static class Program
         outerTable.AddEmptyRow();
 
         outerTable.AddRow("Examples:\n" +
-            "   uniquefilegen 10\n" +
+            "   dotnet run 10\n" +
             "        Creates 10 files with the default settings\n" +
-            "   uniquefilegen 1,000 -p TEST-1229 -e txt -o My Output Folder\n" +
+            "   dotnet run 1,000 -p TEST-1229 -e txt -o My Output Folder\n" +
             "                 -s 1000000 -d 1000\n" +
             "        Creates one thousand 1MB files, each named like\n" +
             "        \"TEST-1229 ##########.txt\", in a subfolder called\n" +

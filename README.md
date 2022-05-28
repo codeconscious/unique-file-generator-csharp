@@ -7,7 +7,7 @@ This tool targets .NET 6 and, for now, needs to be compiled manually.
 At the minimum, you must specify the number of files you want to generate. This should be an sequence of numbers (with optional commas).
 
 ```
-uniquefilegen [filecount]
+dotnet run [filecount]
 ```
 
 ### Argument Flags
@@ -24,11 +24,11 @@ Flag | Description
 *Examples:*
 
 ```
-uniquefilegen 50,000 -p Random-
+dotnet run 50,000 -p Random-
 ```
 Creates 50,000 files, each named similarly to "Random-########", in a subfolder named "output". There are no file extensions, nor is there a space after the prefix (due to the prefix's ending hyphen).
 
 ```
-uniquefilegen 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000
+dotnet run 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000
 ```
 Creates one hundred 1MB files, each named similarly to "TEST-1229 ##########.txt", with a 1s break between each file's creation, and in a subfolder called "My Output Folder".
