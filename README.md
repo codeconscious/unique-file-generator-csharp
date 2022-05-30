@@ -4,10 +4,12 @@ This command line tool allows you to quickly and easily create an arbitrary numb
 This tool targets .NET 6 and, for now, needs to be compiled manually.
 
 ## Usage
-At the minimum, you must specify the number of files you want to generate. This should be an sequence of numbers (with optional commas).
+At the minimum, you must specify the number of files you want to generate. This should be a single positive integer (with optional commas).
+
+#### Example
 
 ```
-dotnet run [filecount]
+dotnet run 1000
 ```
 
 ### Argument Flags
@@ -21,7 +23,7 @@ Flag | Description
 -o | The output subfolder, which will be created if needed. If not supplied, "output" is used by default.
 -d | A delay in milliseconds to be applied between each file's creation. Defaults to 0 if unspecified.
 
-*Examples:*
+#### Examples
 
 ```
 dotnet run 50,000 -p Random-
