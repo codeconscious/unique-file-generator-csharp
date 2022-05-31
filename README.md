@@ -25,12 +25,14 @@ Flag | Description
 
 #### Examples
 
+Tip: Until release files are uploaded, I recommend adding `--` after `dotnet run` when using argument flags to signal that the parameters are for the file generator and not for the `dotnet` command.
+
 ```
-dotnet run 50,000 -p Random-
+dotnet run -- 50,000 -p Random-
 ```
 Creates 50,000 files, each named similarly to "Random-########", in a subfolder named "output". There are no file extensions, nor is there a space after the prefix (due to the prefix's ending hyphen).
 
 ```
-dotnet run 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000
+dotnet run -- 100 -p TEST-1229 -e txt -o My Output Folder -s 1000000 -d 1000
 ```
 Creates one hundred 1MB files, each named similarly to "TEST-1229 ##########.txt", with a 1s break between each file's creation, and in a subfolder called "My Output Folder".
