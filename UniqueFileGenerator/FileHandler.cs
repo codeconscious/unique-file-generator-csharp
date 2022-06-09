@@ -36,8 +36,7 @@ public sealed class FileHandler
     {
         var hasSufficientSpace = EnsureSufficientDriveSpace();
 
-        // Abort if we've confirmed there is insufficient available drive space.
-        if (hasSufficientSpace.HasValue && !hasSufficientSpace.Value)
+        if (hasSufficientSpace == false)
             throw new InvalidOperationException(Resources.DriveSpaceInsufficient);
 
         Directory.CreateDirectory(Settings.OutputDirectory);
