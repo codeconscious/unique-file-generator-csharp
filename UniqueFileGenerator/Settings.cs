@@ -42,11 +42,14 @@ public sealed class Settings
     /// <summary>
     /// The amount of disk space that is necessary for the operation.
     /// </summary>
-    public long DiskSpaceNecessary => FileCount * (SizeInBytes ?? (Prefix.Length + 10));
+    public long DiskSpaceNecessary =>
+        FileCount * (SizeInBytes ?? (Prefix.Length + RandomStringLength));
 
     public bool IsHighFileCount => FileCount > 50_000;
     public bool IsLargeSize => SizeInBytes > 100_000_000;
     public bool IsLongDelay => FileCreationDelayMs > 60_000; // 1m
+
+    public const ushort RandomStringLength = 10; // This could be configurable too.
 
     public Settings(ParsedArguments parsedArgs)
     {

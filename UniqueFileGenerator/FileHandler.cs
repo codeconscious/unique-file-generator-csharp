@@ -21,11 +21,11 @@ public sealed class FileHandler
 
         for (uint i = 0; i < Settings.FileCount; i++)
         {
-            var randomChars = stringFactory.CreateUniqueString(10);
-            var fileName = Settings.Prefix + randomChars;
+            var randomText = stringFactory.CreateUniqueString(length: Settings.RandomStringLength);
+            var fileName = Settings.Prefix + randomText;
 
             var contents = Settings.SizeInBytes.HasValue
-                ? stringFactory.CreateUniqueString(Settings.SizeInBytes.Value)
+                ? stringFactory.CreateUniqueString(length: Settings.SizeInBytes.Value)
                 : fileName;
 
             yield return new FileData(fileName, contents);
