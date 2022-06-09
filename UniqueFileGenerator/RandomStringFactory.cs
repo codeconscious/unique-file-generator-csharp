@@ -18,7 +18,7 @@ public sealed class RandomStringFactory
     /// </summary>
     private string CharacterBank { get; }
 
-    private Random Random { get; } = new();
+    private static Random Random { get; } = new();
 
     /// <summary>
     /// Constructor that populates the character bank.
@@ -73,10 +73,15 @@ public sealed class RandomStringFactory
 
         var outputChars = new char[length];
 
-        for (var i = 0; i < outputChars.Length; i++)
-        {
-            outputChars[i] = CharacterBank[Random.Next(CharacterBank.Length)];
-        }
+        //for (var i = 0; i < outputChars.Length; i++)
+        //{
+        //    outputChars[i] = CharacterBank[Random.Next(CharacterBank.Length)];
+        //}
+
+        Enumerable.Range(0, outputChars.Length)
+            .ToList()
+            .ForEach(i =>
+                outputChars[i] = CharacterBank[Random.Next(CharacterBank.Length)]);
 
         return new string(outputChars);
     }
