@@ -10,6 +10,9 @@ public static class Program
             return;
         }
 
+        var stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+
         var parsedArgs = ArgParser.ParseArgs(args);
 
         try
@@ -34,8 +37,9 @@ public static class Program
         catch (Exception ex)
         {
             AnsiConsole.MarkupLine($"[red]{Resources.CancelledDueToError} {ex.Message}[/]");
-            return;
         }
+
+        AnsiConsole.WriteLine($"Done in {stopwatch.ElapsedMilliseconds:#,##0}ms");
     }
 
     private static void PrintInstructions()
