@@ -2,6 +2,9 @@ using System.IO;
 
 namespace UniqueFileGenerator;
 
+/// <summary>
+/// The configuration settings used to generate new files.
+/// </summary>
 public sealed class Settings
 {
     /// <summary>
@@ -25,7 +28,8 @@ public sealed class Settings
     public string OutputDirectory { get; }
 
     /// <summary>
-    /// The size of each created file.
+    /// The size of each created file, if specified.
+    /// Otherwise, a default size is used.
     /// </summary>
     public int? SizeInBytes { get; }
 
@@ -109,8 +113,6 @@ public sealed class Settings
         CharacterTypes = CharacterType.UpperCaseLetter |
                          CharacterType.Number;
     }
-
-
 
     /// <summary>
     /// Confirm with the user if they wish to continue despite higher-than-expected values.
