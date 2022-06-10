@@ -13,10 +13,9 @@ public static class Program
         var stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();
 
-        var parsedArgs = ArgParser.ParseArgs(args);
-
         try
         {
+            var parsedArgs = ArgParser.ParseArgs(args);
             var settings = new Settings(parsedArgs);
 
             if (!settings.ShouldProceedDespiteHighValues())
@@ -30,16 +29,16 @@ public static class Program
             fileHandler.CreateFiles();
 
             AnsiConsole.MarkupLine(settings.FileCount == 1
-                ? Resources.CompletedOne
+                ? string.Format(Resources.CompletedOne,
+                                $"{stopwatch.ElapsedMilliseconds:#,##0}ms")
                 : string.Format(Resources.CompletedZeroOrMultiple,
-                                settings.FileCount.ToString("#,##0")));
+                                settings.FileCount.ToString("#,##0"),
+                                $"{stopwatch.ElapsedMilliseconds:#,##0}ms"));
         }
         catch (Exception ex)
         {
             AnsiConsole.MarkupLine($"[red]{Resources.CancelledDueToError} {ex.Message}[/]");
         }
-
-        AnsiConsole.WriteLine($"Done in {stopwatch.ElapsedMilliseconds:#,##0}ms");
     }
 
     private static void PrintInstructions()

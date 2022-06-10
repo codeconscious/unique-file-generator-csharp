@@ -138,12 +138,12 @@
     <comment/>
   </data>
   <data name="CompletedOne" xml:space="preserve">
-    <value>1 file created.</value>
-    <comment/>
+    <value>1 file created in {0}.</value>
+    <comment>{0}: the elapsed time.</comment>
   </data>
   <data name="CompletedZeroOrMultiple" xml:space="preserve">
-    <value>{0} files created.</value>
-    <comment>{0}: The file count</comment>
+    <value>{0} files created in {1}.</value>
+    <comment>{0}: The file count; {1}: the elapsed time.</comment>
   </data>
   <data name="DriveSpaceInsufficient" xml:space="preserve">
     <value>There is not enough free space on this disk to continue.</value>
