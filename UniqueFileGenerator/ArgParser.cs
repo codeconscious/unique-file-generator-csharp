@@ -97,7 +97,6 @@ public static class ArgParser
     /// Determines if the given text in the format of a command line flag argument (e.g., "-e").
     /// </summary>
     /// <param name="text"></param>
-    /// <returns></returns>
     private static bool IsInFlagFormat(string text)
     {
         return !string.IsNullOrWhiteSpace(text) &&
