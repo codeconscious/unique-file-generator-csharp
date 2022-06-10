@@ -10,11 +10,12 @@ public sealed class FileHandler
 
     public FileHandler(Settings settings)
     {
-        ArgumentNullException.ThrowIfNull(settings);
-
-        Settings = settings;
+        Settings = settings ?? throw new ArgumentNullException(nameof(settings));
     }
 
+    /// <summary>
+    /// Create FileData instances using the settings.
+    /// </summary>
     private IEnumerable<FileData> GetFileData()
     {
         var stringFactory = new RandomStringFactory(Settings.CharacterTypes);
@@ -32,6 +33,9 @@ public sealed class FileHandler
         }
     }
 
+    /// <summary>
+    /// Create and write files to the drive.
+    /// </summary>
     public void CreateFiles()
     {
         var hasSufficientSpace = EnsureSufficientDriveSpace();
@@ -82,11 +86,11 @@ public sealed class FileHandler
     private bool? EnsureSufficientDriveSpace()
     {
         // Don't allow the drive space to drop below this size in bytes.
-        const long driveSpaceToKeepAvailable = 500_000_000; // Roughly 0.5GB
+        const long driveSpaceToKeepAvailable = 536_870_912; // 0.5GB
 
         try
         {
-            var appPath = System.AppContext.BaseDirectory; // System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var appPath = System.AppContext.BaseDirectory;
 
             var rootPath = Path.GetPathRoot(appPath);
             if (rootPath == null)
@@ -103,7 +107,10 @@ public sealed class FileHandler
         }
     }
 
-    private class FileData
+    /// <summary>
+    /// Represents the data necessary to save a file on the drive.
+    /// </summary>
+    private record class FileData
     {
         public string Name { get; }
         public string Content { get; }
