@@ -63,15 +63,12 @@ public sealed class RandomStringFactory
     public string CreateUniqueString(int length)
     {
         if (length < 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(length), Resources.LengthInvalidNegative);
-        }
+            throw new ArgumentOutOfRangeException(nameof(length), Resources.LengthInvalidNegative);
 
         if (length == 0)
             return string.Empty;
 
-        var outputChars = new char[length];
+        Span<char> outputChars = new char[length];
 
         for (var i = 0; i < outputChars.Length; i++)
         {
