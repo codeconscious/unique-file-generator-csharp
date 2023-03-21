@@ -28,8 +28,6 @@ public sealed class RandomStringFactory
     {
         ArgumentNullException.ThrowIfNull(nameof(charTypes));
 
-        var sb = new System.Text.StringBuilder();
-
         // Get the combined distinct characters for each provided character type.
         var chars = string.Concat(
             Enum.GetValues(typeof(CharacterType))
@@ -38,19 +36,13 @@ public sealed class RandomStringFactory
                 .SelectMany(type => CharactersByCategory[type])
                 .Distinct());
 
+        var sb = new System.Text.StringBuilder();
         sb.Append(chars);
 
         if (sb.Length == 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(sb), Resources.CharBankEmpty);
-        }
-
+            throw new ArgumentOutOfRangeException(Resources.CharBankEmpty);
         if (sb.Length == 1)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(sb), Resources.CharBankTooShort);
-        }
+            throw new ArgumentOutOfRangeException(Resources.CharBankTooShort);
 
         CharacterBank = sb.ToString();
     }
@@ -59,12 +51,9 @@ public sealed class RandomStringFactory
     /// Creates a single string of a specific length using random characters
     /// from the character bank.
     /// </summary>
-    /// <param name="length">The desired string length.</param>
-    public string CreateUniqueString(int length)
+    /// <param name="length">The desired string length as a positive int.</param>
+    public string CreateUniqueString(uint length)
     {
-        if (length < 0)
-            throw new ArgumentOutOfRangeException(nameof(length), Resources.LengthInvalidNegative);
-
         if (length == 0)
             return string.Empty;
 

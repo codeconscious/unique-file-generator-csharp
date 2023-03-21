@@ -31,7 +31,7 @@ public sealed class Settings
     /// The size of each created file, if specified.
     /// Otherwise, a default size is used.
     /// </summary>
-    public int? SizeInBytes { get; }
+    public uint? SizeInBytes { get; }
 
     /// <summary>
     /// A delay in milliseconds to add between the creation of each file.
@@ -47,7 +47,7 @@ public sealed class Settings
     /// The amount of disk space that is necessary for the operation.
     /// </summary>
     public long DiskSpaceNecessary =>
-        FileCount * (SizeInBytes ?? (Prefix.Length + RandomStringLength));
+        FileCount * (SizeInBytes ?? (uint)(Prefix.Length + RandomStringLength));
 
     public bool IsHighFileCount => FileCount > 50_000;
     public bool IsLargeSize => SizeInBytes > 100_000_000;
@@ -78,21 +78,17 @@ public sealed class Settings
         // TODO: Accept sizes in formats like "30KB" or "10.4MB"
         if (args.ContainsKey("-s"))
         {
-            if (int.TryParse(args["-s"], out var parsedSize))
+            if (uint.TryParse(args["-s"], out var parsedSize))
             {
                 SizeInBytes = parsedSize switch
                 {
-                    0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedSize),
-                            Resources.FileSizeInvalidZero),
+                    0 => throw new ArgumentOutOfRangeException(Resources.FileSizeInvalidZero),
                     _ => parsedSize
                 };
             }
-            else // A non-numeric value was passed in.
+            else // A non-numeric size was passed in.
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(parsedSize),
-                    Resources.FileSizeInvalidRange);
+                throw new ArgumentOutOfRangeException(Resources.FileSizeInvalidRange);
             }
         }
 
@@ -102,9 +98,7 @@ public sealed class Settings
         {
             FileCreationDelayMs = parsedDelay switch
             {
-                < 0 => throw new ArgumentOutOfRangeException(
-                            nameof(parsedDelay),
-                            Resources.FileCreationDelayOutOfRange),
+                < 0 => throw new ArgumentOutOfRangeException(Resources.FileCreationDelayOutOfRange),
                 _ => parsedDelay
             };
         }
@@ -124,7 +118,7 @@ public sealed class Settings
         if (IsHighFileCount && !AnsiConsole.Confirm(Resources.CountWarning))
             return false;
 
-        // If the user requested a very large file sizes, confirm the operation.
+        // If the user requested very large file sizes, confirm the operation.
         if (IsLargeSize && !AnsiConsole.Confirm(Resources.SizeWarning))
             return false;
 

@@ -45,10 +45,7 @@ public static class ArgParser
         }
 
         if (fileCount == 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(fileCount), Resources.FileCountInvalidZero);
-        }
+            throw new ArgumentOutOfRangeException(Resources.FileCountInvalidZero);
 
         var argDict = new Dictionary<string, string>(SupportedFlags.Count);
 
@@ -61,7 +58,7 @@ public static class ArgParser
 
             if (SupportedFlags.Contains(thisArg))
             {
-                // Flags cannot be used twice.
+                // Flags must not be used twice.
                 if (argDict.ContainsKey(thisArg))
                     throw new InvalidOperationException(Resources.FlagCanBeUsedOnce);
 
