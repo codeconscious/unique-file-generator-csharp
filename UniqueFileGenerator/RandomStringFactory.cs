@@ -26,12 +26,9 @@ public sealed class RandomStringFactory
     /// <param name="charTypes">An enum representing one or more character types.</param>
     public RandomStringFactory(CharacterType charTypes)
     {
-        ArgumentNullException.ThrowIfNull(nameof(charTypes));
-
         // Get the combined distinct characters for each provided character type.
         var chars = string.Concat(
-            Enum.GetValues(typeof(CharacterType))
-                .Cast<CharacterType>()
+            Enum.GetValues<CharacterType>()
                 .Where(type => charTypes.HasFlag(type))
                 .SelectMany(type => CharactersByCategory[type])
                 .Distinct());
