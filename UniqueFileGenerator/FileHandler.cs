@@ -90,7 +90,7 @@ public sealed class FileHandler
 
         try
         {
-            var appPath = System.AppContext.BaseDirectory;
+            var appPath = AppContext.BaseDirectory;
 
             var rootPath = Path.GetPathRoot(appPath);
             if (rootPath == null)
@@ -110,7 +110,7 @@ public sealed class FileHandler
     /// <summary>
     /// Represents the data necessary to save a file on the drive.
     /// </summary>
-    private record class FileData
+    private record FileData
     {
         public string Name { get; }
         public string Content { get; }
