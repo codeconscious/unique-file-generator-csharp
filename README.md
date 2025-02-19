@@ -1,6 +1,6 @@
 # Unique File Generator (C#)
 
-(I also have [a version of this tool written in Rust](https://github.com/codeconscious/unique-file-generator-rust/blob/main/README.md).)
+(I also have versions of this tool written in [Rust](https://github.com/codeconscious/unique-file-generator-rust) and [F#](https://github.com/codeconscious/unique-file-generator-fsharp/).)
 
 This command line tool allows you to quickly and easily create an arbitrary number of unique (by name and content) files on your computer. Each filename contains a random collection of characters to differentiate them. You can also supply optional parameters to customize files according to your needs. Before running, the tool will check that there is sufficient drive space available for the operation.
 
